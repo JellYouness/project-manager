@@ -19,11 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("max-h-screen w-full flex", inter.className)}>
+      <body
+        className={cn("flex min-h-screen flex-1", inter.className)}
+      >
         <SideBar />
-        <div className="w-full h-full flex flex-col">
+        <div className="flex h-full w-full flex-1 flex-col">
           <Header />
-          <div className="p-8 h-full flex-1 flex-grow">{children}</div>
+          <div className="p-8 flex flex-1 flex-col">{children}</div>
         </div>
       </body>
     </html>
