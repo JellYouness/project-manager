@@ -4,6 +4,8 @@ import "./globals.css";
 import SideBar from "@/components/SideBar";
 import { cn } from "@/lib/utils";
 import Header from "@/components/Header";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,13 +21,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={cn("flex min-h-screen flex-1", inter.className)}
-      >
+      <body className={cn("flex h-screen flex-1", inter.className)}>
         <SideBar />
         <div className="flex h-full w-full flex-1 flex-col">
           <Header />
-          <div className="p-8 flex flex-1 flex-col">{children}</div>
+          <div className="p-4 h-full flex flex-1 flex-col">
+            <Suspense fallback={<Loading />}>{children}</Suspense>
+          </div>
         </div>
       </body>
     </html>

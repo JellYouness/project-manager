@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Label } from "@radix-ui/react-label";
+import { useEffect } from "react";
 
 const chats = [
   {
@@ -47,6 +48,9 @@ const chats = [
 ];
 
 export default function Home() {
+  useEffect(() => {
+    setTimeout(() => {}, 2000);
+  });
   return (
     <div className="flex gap-6 w-full h-full">
       <Card className="w-1/3 h-full">

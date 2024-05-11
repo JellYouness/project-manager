@@ -3,11 +3,15 @@ import React, { useState } from "react";
 import { Button } from "./ui/button";
 import {
   Calendar,
+  Captions,
   ChevronRight,
   File,
+  GraduationCap,
   Home,
   LayoutDashboard,
   MessageCircle,
+  University,
+  Users,
   UsersRound,
 } from "lucide-react";
 import Nav from "./Nav";
@@ -73,6 +77,30 @@ const SideBar = () => {
             title: "Chat",
             href: "/chat",
             icon: MessageCircle,
+            variant: "default",
+          },
+          {
+            title: "Etudiants",
+            href: "/etudiants",
+            icon: GraduationCap,
+            variant: "default",
+          },
+          {
+            title: "Enseignants",
+            href: "/enseignants",
+            icon: University,
+            variant: "default",
+          },
+          {
+            title: "Sujets",
+            href: "/sujets",
+            icon: Captions,
+            variant: "default",
+          },
+          {
+            title: "Groupes",
+            href: "/groupes",
+            icon: Users,
             variant: "default",
           },
         ]}

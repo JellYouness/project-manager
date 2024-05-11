@@ -5,10 +5,11 @@ import { LucideIcon } from "lucide-react";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: LucideIcon;
+  endIcon?: LucideIcon;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, icon, type, ...props }, ref) => {
+  ({ className, icon, endIcon, type, ...props }, ref) => {
     return (
       <div className="w-full relative">
         {icon && (
@@ -26,6 +27,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...props}
         />
+        {endIcon && (
+          <div className="absolute right-1.5 top-1/2 transform -translate-y-1/2">
+            {React.createElement(endIcon)}
+          </div>
+        )}
       </div>
     );
   }
