@@ -17,19 +17,19 @@ import {
 import Nav from "./Nav";
 import Logo from "@/public/logo.svg";
 import Image from "next/image";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const SideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  const onlyWidth = window.innerWidth;
-  const mobileWidth = onlyWidth < 768;
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   function toggleSidebar() {
     setIsCollapsed(!isCollapsed);
   }
   return (
     <div className="bg-[#333238] text-white relative min-w-14 lg:min-w-20 h-full border-r px-3 pb-10 pt-8">
-      {!mobileWidth && (
+      {!isMobile && (
         <div className="absolute right-[-20px] top-7">
           <Button
             onClick={toggleSidebar}
@@ -47,7 +47,7 @@ const SideBar = () => {
         )} */}
       </div>
       <Nav
-        isCollapsed={mobileWidth ? true : isCollapsed}
+        isCollapsed={isMobile ? true : isCollapsed}
         links={[
           {
             title: "Home",
