@@ -28,7 +28,7 @@ const SideBar = () => {
     setIsCollapsed(!isCollapsed);
   }
   return (
-    <div className="bg-[#333238] text-white relative min-w-14 lg:min-w-20 h-screen border-r px-3 pb-10 pt-8">
+    <div className="bg-[#333238] text-white relative min-w-14 lg:min-w-20 h-full border-r px-3 pb-10 pt-8">
       {!mobileWidth && (
         <div className="absolute right-[-20px] top-7">
           <Button

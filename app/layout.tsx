@@ -25,8 +25,8 @@ export default function RootLayout({
         <SideBar />
         <div className="flex h-full w-full flex-1 flex-col">
           <Header />
-          <div className="p-4 h-full flex flex-1 flex-col">
-            <Suspense fallback={<Loading />}>{children}</Suspense>
+          <div className="p-4 h-full overflow-y-scroll">
+            {children}
           </div>
         </div>
       </body>

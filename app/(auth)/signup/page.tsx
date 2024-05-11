@@ -167,7 +167,7 @@ export default function Home() {
               type="submit"
               className="h-10 w-full flex-none btn btn-active btn-neutral"
             >
-              S'inscrire
+              S&apos;inscrire
             </button>
           </form>
         </Form>

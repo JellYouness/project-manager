@@ -117,14 +117,14 @@ export default function Home() {
             </div>
           </CardHeader>
           <div className="flex h-px w-full flex-none flex-col items-center gap-2 bg-gray-200" />
-          <div className="flex w-full flex-col items-start pt-2 pr-2 pb-2 pl-2">
+          <div className="flex w-full flex-col items-start p-2">
             {tasks.map((task, i) => (
               <div
-                className="flex w-full items-center gap-4 pt-4 pr-4 pb-4 pl-4"
+                className="flex w-full items-center gap-4 p-4"
                 key={i}
               >
                 <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-1">
-                  <span className="w-full text-body-bold font-body-bold">
+                  <span className="w-full text-sm">
                     {task.title}
                   </span>
                   <span className="w-full text-sm text-gray-400">
@@ -147,11 +147,11 @@ export default function Home() {
           <CardContent className="flex w-full flex-col items-start p-2">
             {events.map((event, i) => (
               <div
-                className="flex w-full items-center gap-4 pt-4 pr-4 pb-4 pl-4"
+                className="flex w-full items-center gap-4 p-4"
                 key={i}
               >
                 <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-1">
-                  <span className="w-full text-body-bold font-body-bold">
+                  <span className="w-full text-sm">
                     {event.title}
                   </span>
                   <span className="w-full text-sm text-gray-400">

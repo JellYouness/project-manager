@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Clipboard } from "lucide-react";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -27,7 +28,7 @@ export default function Home() {
         <div className="flex w-full flex-col items-start gap-6">
           <span className="text-xl font-semibold">Inviter</span>
           <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="email">Lien d'invitaion:</Label>
+            <Label htmlFor="email">Lien d&apos;invitaion:</Label>
             <Input
               disabled
               endIcon={Clipboard}
@@ -49,7 +50,8 @@ export default function Home() {
             <TableRow>
               <TableCell className="font-medium">
                 <div className="flex items-center gap-4">
-                  <img
+                  <Image
+                    alt="Profile picture"
                     className="size-8 flex-none object-cover [clip-path:circle()]"
                     src="https://github.com/shadcn.png"
                   />

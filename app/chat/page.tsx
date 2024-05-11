@@ -77,7 +77,10 @@ export default function Home() {
                 )}
               >
                 <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarImage
+                    alt="photo"
+                    src="https://github.com/shadcn.png"
+                  />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <div>
@@ -101,7 +104,7 @@ export default function Home() {
           <CardTitle className="text-sm font-medium">
             <div className="flex items-center gap-4">
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage alt="photo" src="https://github.com/shadcn.png" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <span>John Doe</span>
@@ -120,7 +123,7 @@ export default function Home() {
           <div className="flex flex-col gap-4 h-full">
             <div className="flex items-center gap-1 max-w-[500px] min-w-52">
               <Avatar className="size-7">
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage alt="photo" src="https://github.com/shadcn.png" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className="flex items-center gap-4 p-3 rounded-xl bg-primary text-white">

@@ -32,7 +32,7 @@ const appointments = [
 
 export default function Home() {
   return (
-    <main>
+    <main className="">
       <Card>
         <Scheduler data={appointments}>
           <ViewState defaultCurrentDate={currentDate} />
