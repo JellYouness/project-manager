@@ -70,6 +70,7 @@ export default function Home() {
           <div className="flex flex-col gap-2 mt-4">
             {chats.map((chat, index) => (
               <div
+                key={index}
                 className={cn(
                   "flex items-center gap-4 p-3 rounded-xl",
                   chat.selected && "bg-primary text-white",
