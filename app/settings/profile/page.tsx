@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Image from "next/image";
 
 export default function Home() {
   return (
@@ -35,8 +34,7 @@ export default function Home() {
           <div className="flex w-full flex-col items-start gap-2">
             <span className="text-lg font-semibold">Profile picture:</span>
             <div className="flex items-center gap-4">
-              <Image
-                alt="Profile picture"
+              <img
                 className="h-16 w-16 flex-none object-cover [clip-path:circle()]"
                 src="https://github.com/shadcn.png"
               />

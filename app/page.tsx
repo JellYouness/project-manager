@@ -1,3 +1,4 @@
+"use client";
 import { Activity, BookmarkCheck, Timer, BookmarkMinus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -113,20 +114,17 @@ export default function Home() {
               <CardTitle className="w-full grow shrink-0 basis-0 text-lg font-bold">
                 To-do
               </CardTitle>
-              <Button>View all</Button>
+              <Link href="/dashboard">
+                <Button>View all</Button>
+              </Link>
             </div>
           </CardHeader>
           <div className="flex h-px w-full flex-none flex-col items-center gap-2 bg-gray-200" />
           <div className="flex w-full flex-col items-start p-2">
             {tasks.map((task, i) => (
-              <div
-                className="flex w-full items-center gap-4 p-4"
-                key={i}
-              >
+              <div className="flex w-full items-center gap-4 p-4" key={i}>
                 <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-1">
-                  <span className="w-full text-sm">
-                    {task.title}
-                  </span>
+                  <span className="w-full text-sm">{task.title}</span>
                   <span className="w-full text-sm text-gray-400">
                     {task.description}
                   </span>
@@ -141,19 +139,16 @@ export default function Home() {
             <CardTitle className="w-full grow shrink-0 basis-0 text-lg font-bold">
               Upcoming events
             </CardTitle>
-            <Button>View all</Button>
+            <Link href="/calendar">
+              <Button>View all</Button>
+            </Link>
           </CardHeader>
           <div className="flex h-px w-full flex-none flex-col items-center gap-2 bg-gray-200" />
           <CardContent className="flex w-full flex-col items-start p-2">
             {events.map((event, i) => (
-              <div
-                className="flex w-full items-center gap-4 p-4"
-                key={i}
-              >
+              <div className="flex w-full items-center gap-4 p-4" key={i}>
                 <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-1">
-                  <span className="w-full text-sm">
-                    {event.title}
-                  </span>
+                  <span className="w-full text-sm">{event.title}</span>
                   <span className="w-full text-sm text-gray-400">
                     {event.date}
                   </span>

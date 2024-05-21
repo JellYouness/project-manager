@@ -4,8 +4,7 @@ import "./globals.css";
 import SideBar from "@/components/SideBar";
 import { cn } from "@/lib/utils";
 import Header from "@/components/Header";
-import { Suspense } from "react";
-import Loading from "./loading";
+import ReduxProvider from "./ReduxProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,15 +20,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("flex h-screen flex-1", inter.className)}>
-        <SideBar />
-        <div className="flex h-full w-full flex-1 flex-col">
-          <Header />
-          <div className="p-4 h-full overflow-y-scroll">
-            {children}
+      <ReduxProvider>
+        <body className={cn("flex h-screen flex-1", inter.className)}>
+          <SideBar />
+          <div className="flex h-full w-full flex-1 flex-col">
+            <Header />
+            <div className="p-4 h-full overflow-y-scroll">{children}</div>
           </div>
-        </div>
-      </body>
+        </body>
+      </ReduxProvider>
     </html>
   );
 }

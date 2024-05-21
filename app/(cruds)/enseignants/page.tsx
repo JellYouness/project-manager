@@ -22,9 +22,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { columns, data } from "./Columns";
+import { columns } from "./Columns";
+import { useGetEnseignantsQuery } from "@/api/routes/crud/enseignants";
+import TableSkeleton from "@/components/TableSkeleton";
 
 export default function Home() {
+  const { data: enseignants, isLoading, isSuccess } = useGetEnseignantsQuery();
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -35,7 +39,7 @@ export default function Home() {
   });
 
   const table = useReactTable({
-    data,
+    data: enseignants ?? [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -86,7 +90,9 @@ export default function Home() {
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows?.length ? (
+              {/*------------------ Results -------------------------*/}
+              {isSuccess &&
+                table.getRowModel().rows?.length &&
                 table.getRowModel().rows.map((row) => (
                   <TableRow key={row.id}>
                     {row.getAllCells().map((cell) => (
@@ -98,8 +104,10 @@ export default function Home() {
                       </TableCell>
                     ))}
                   </TableRow>
-                ))
-              ) : (
+                ))}
+
+              {/*----------------- Empty Results -----------------*/}
+              {isSuccess && table.getRowModel().rows?.length == 0 && (
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
@@ -109,6 +117,9 @@ export default function Home() {
                   </TableCell>
                 </TableRow>
               )}
+
+              {/* ---------------- Loading state -------------------- */}
+              {isLoading && <TableSkeleton colSpan={columns.length} />}
             </TableBody>
           </Table>
         </div>

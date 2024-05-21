@@ -1,0 +1,74 @@
+{
+  "enseignants": [
+    {
+      "id": "1",
+      "nom": "Lefebvre",
+      "prenom": "Emilie",
+      "email": "emilie.lefebvre@example.com",
+      "specialite": "SID"
+    },
+    {
+      "id": "2",
+      "nom": "Dupont",
+      "prenom": "Lucas",
+      "email": "lucas.dupont@example.com",
+      "specialite": "BD"
+    },
+    {
+      "id": "3",
+      "nom": "Bernard",
+      "prenom": "Marie",
+      "email": "marie.bernard@example.com",
+      "specialite": "RES"
+    },
+    {
+      "id": "4",
+      "nom": "Petit",
+      "prenom": "Thomas",
+      "email": "thomas.petit@example.com",
+      "specialite": "BD"
+    },
+    {
+      "id": "5",
+      "nom": "Garcia",
+      "prenom": "Laura",
+      "email": "laura.garcia@example.com",
+      "specialite": "RES"
+    },
+    {
+      "id": "6",
+      "nom": "Robert",
+      "prenom": "Julien",
+      "email": "julien.robert@example.com",
+      "specialite": "SID"
+    },
+    {
+      "id": "7",
+      "nom": "Rousseau",
+      "prenom": "Sophie",
+      "email": "sophie.rousseau@example.com",
+      "specialite": "BD"
+    },
+    {
+      "id": "8",
+      "nom": "Blanc",
+      "prenom": "Nicolas",
+      "email": "nicolas.blanc@example.com",
+      "specialite": "RES"
+    },
+    {
+      "id": "9",
+      "nom": "Moreau",
+      "prenom": "Chloé",
+      "email": "chloe.moreau@example.com",
+      "specialite": "SID"
+    },
+    {
+      "id": "10",
+      "nom": "Leroy",
+      "prenom": "Alexandre",
+      "email": "alexandre.leroy@example.com",
+      "specialite": "BD"
+    }
+  ]
+}

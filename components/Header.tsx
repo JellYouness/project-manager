@@ -18,7 +18,7 @@ const Header = () => {
       <div className="hidden md:block">Bonjour, Admin</div>
       <div className="">Equipe: #32, Encadrant: Pr. Nabil</div>
       <div className="flex items-center gap-6">
-        <Link href="/settings">
+        <Link href="/settings/profile">
           <Settings />
         </Link>
         <Bell />
