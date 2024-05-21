@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { ViewState } from "@devexpress/dx-react-scheduler";
+import { AppointmentModel, ViewState } from "@devexpress/dx-react-scheduler";
 import {
   Scheduler,
   MonthView,
@@ -14,6 +14,8 @@ import {
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { Card } from "@/components/ui/card";
 
+//const appointmentsS: Array<AppointmentModel> =
+
 const currentDate = "2024-04-28";
 
 const appointments = [
@@ -22,6 +24,7 @@ const appointments = [
     title: "Product Meeting",
     startDate: "2024-04-30T10:30",
     endDate: "2024-04-30T11:30",
+    text: "Discuss new design project with the team",
   },
   {
     title: "Send Territory Sales Breakdown",
