@@ -1,7 +1,7 @@
 import { baseApi } from "@/api/baseApi";
 
 
-const etudiantApi = baseApi.injectEndpoints({
+const etudiantApi: any = baseApi.injectEndpoints({
     endpoints: builder => ({
         getEtudiants: builder.query({
             query: () => "etudiants",

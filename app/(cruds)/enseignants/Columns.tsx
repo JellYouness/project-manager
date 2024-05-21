@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 
-export type Etudiant = {
+export type Enseignant = {
   id: string;
   nom: string;
   prenom: string;
@@ -20,7 +20,7 @@ export type Etudiant = {
   specialite: "SID" | "RES" | "BD";
 };
 
-export const columns: ColumnDef<Etudiant>[] = [
+export const columns: ColumnDef<Enseignant>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => {

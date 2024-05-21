@@ -22,9 +22,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { columns, data } from "./Columns";
+import { columns } from "./Columns";
+import { useGetEtudiantsQuery } from "@/api/routes/crud/etudiants";
+import TableSkeleton from "@/components/TableSkeleton";
 
 export default function Home() {
+const { data: etudiants, isLoading, isSuccess } = useGetEtudiantsQuery();
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -35,7 +39,7 @@ export default function Home() {
   });
 
   const table = useReactTable({
-    data,
+    data: etudiants ?? [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -57,9 +61,7 @@ export default function Home() {
         <div className="flex items-center py-4">
           <Input
             placeholder="Filter emails..."
-            value={
-              (table.getColumn("email")?.getFilterValue() as string) ?? ""
-            }
+            value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
               table.getColumn("email")?.setFilterValue(event.target.value)
             }
@@ -88,7 +90,9 @@ export default function Home() {
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows?.length ? (
+              {/*------------------ Results -------------------------*/}
+              {isSuccess &&
+                table.getRowModel().rows?.length &&
                 table.getRowModel().rows.map((row) => (
                   <TableRow key={row.id}>
                     {row.getAllCells().map((cell) => (
@@ -100,8 +104,10 @@ export default function Home() {
                       </TableCell>
                     ))}
                   </TableRow>
-                ))
-              ) : (
+                ))}
+
+              {/*----------------- Empty Results -----------------*/}
+              {isSuccess && table.getRowModel().rows?.length == 0 && (
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
@@ -111,6 +117,9 @@ export default function Home() {
                   </TableCell>
                 </TableRow>
               )}
+
+              {/* ---------------- Loading state -------------------- */}
+              {isLoading && <TableSkeleton colSpan={columns.length} />}
             </TableBody>
           </Table>
         </div>
