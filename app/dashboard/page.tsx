@@ -74,14 +74,14 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col items-center gap-2">
                     <button
-                      className="bg-blue-500 text-white p-1 rounded"
+                      className="bg-blue-500 hover:bg-blue-600 text-white p-1 rounded"
                       onClick={() => markAsProgress(task.id)}
                     >
                       <Plus className="size-4" />
                     </button>
                     <Avatar className="size-6">
-                      <AvatarFallback className="text-black bg-lime-300 text-xs">
-                        CN
+                      <AvatarFallback className="text-white bg-purple-800 text-[11px] font-semibold">
+                        YJ
                       </AvatarFallback>
                     </Avatar>
                   </div>
@@ -111,14 +111,14 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col items-center gap-2">
                   <button
-                    className="bg-blue-500 text-white p-1 rounded"
+                    className="bg-green-500 hover:bg-green-600 text-white p-1 rounded"
                     onClick={() => markAsProgress(task.id)}
                   >
-                    <Plus className="size-4" />
+                    <Check className="size-4" />
                   </button>
                   <Avatar className="size-6">
-                    <AvatarFallback className="text-black bg-lime-300 text-xs">
-                      CN
+                    <AvatarFallback className="text-white bg-purple-800 text-[11px] font-medium">
+                      YJ
                     </AvatarFallback>
                   </Avatar>
                 </div>
@@ -159,8 +159,8 @@ export default function Home() {
                       <Plus className="size-4" />
                     </Button>
                     <Avatar className="size-6">
-                      <AvatarFallback className="text-black bg-lime-300 text-xs">
-                        CN
+                      <AvatarFallback className="text-white bg-purple-800 text-[11px] font-semibold">
+                        YJ
                       </AvatarFallback>
                     </Avatar>
                   </div>
