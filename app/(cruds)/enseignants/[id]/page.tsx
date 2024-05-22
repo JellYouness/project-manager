@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Image from "next/image";
 
 export default function Home({ params }: { params: { id: number } }) {
   return (
@@ -46,22 +45,6 @@ export default function Home({ params }: { params: { id: number } }) {
               <div className="grid w-full max-w-[49rem] items-center gap-1.5">
                 <Label htmlFor="email">Filiere:</Label>
                 <Input type="email" id="email" placeholder="Email" />
-              </div>
-            </div>
-            <div className="flex w-full flex-col items-start gap-2">
-              <span className="text-lg font-semibold">Profile picture:</span>
-              <div className="flex items-center gap-4">
-                <Image
-                  alt="Profile picture"
-                  className="h-16 w-16 flex-none object-cover [clip-path:circle()]"
-                  src="https://github.com/shadcn.png"
-                />
-                <div className="flex flex-col items-start gap-2">
-                  <Button>Upload</Button>
-                  <span className="text-sm text-gray-400">
-                    For best results, upload an image 512x512 or larger.
-                  </span>
-                </div>
               </div>
             </div>
             <div className="flex w-full items-center justify-end">

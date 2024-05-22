@@ -23,6 +23,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { columns, data } from "./Columns";
+import Link from "next/link";
 
 export default function Home() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -54,7 +55,7 @@ export default function Home() {
   return (
     <main className="w-full">
       <Card className="p-4">
-        <div className="flex items-center py-4">
+        <div className="flex justify-center items-center py-4">
           <Input
             placeholder="Filter emails..."
             value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
@@ -64,6 +65,9 @@ export default function Home() {
             icon={Search}
             className="max-w-sm"
           />
+          <Link href="/groupes/create">
+            <Button>Ajouter</Button>
+          </Link>
         </div>
         <div className="rounded-md border">
           <Table>

@@ -31,7 +31,7 @@ const groupeApi = baseApi.injectEndpoints({
   }),
 });
 
-const {
+export const {
   useGetGroupesQuery,
   useGetGroupeQuery,
   useCreateGroupeMutation,

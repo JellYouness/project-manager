@@ -162,6 +162,143 @@
       "cne": "A012345678",
       "filiere": "BD"
     }
+  ],
+  "tasks":[
+    {
+      "id": 1,
+      "titre": "Task 1",
+      "description": "Description for Task 1",
+      "startDate": "2024-04-30",
+      "endDate": "2024-04-30",
+      "status": "todo",
+      "feedback": "No feedback yet"
+    },
+    {
+      "id": 2,
+      "titre": "Task 2",
+      "description": "Description for Task 2",
+      "startDate": "2024-05-01",
+      "endDate": "2024-05-01",
+      "status": "inprogress",
+      "feedback": "Some feedback"
+    },
+    {
+      "id": 3,
+      "titre": "Task 3",
+      "description": "Description for Task 3",
+      "startDate": "2024-05-02",
+      "endDate": "2024-05-02",
+      "status": "done",
+      "feedback": "Great work"
+    },
+    {
+      "id": 4,
+      "titre": "Task 4",
+      "description": "Description for Task 4",
+      "startDate": "2024-05-03",
+      "endDate": "2024-05-03",
+      "status": "todo",
+      "feedback": "No feedback yet"
+    },
+    {
+      "id": 5,
+      "titre": "Task 5",
+      "description": "Description for Task 5",
+      "startDate": "2024-05-04",
+      "endDate": "2024-05-04",
+      "status": "inprogress",
+      "feedback": "Needs improvement"
+    },
+    {
+      "id": 6,
+      "titre": "Task 6",
+      "description": "Description for Task 6",
+      "startDate": "2024-05-05",
+      "endDate": "2024-05-05",
+      "status": "done",
+      "feedback": "Excellent job"
+    },
+    {
+      "id": 7,
+      "titre": "Task 7",
+      "description": "Description for Task 7",
+      "startDate": "2024-05-06",
+      "endDate": "2024-05-06",
+      "status": "todo",
+      "feedback": "No feedback yet"
+    },
+    {
+      "id": 8,
+      "titre": "Task 8",
+      "description": "Description for Task 8",
+      "startDate": "2024-05-07",
+      "endDate": "2024-05-07",
+      "status": "inprogress",
+      "feedback": "Under review"
+    },
+    {
+      "id": 9,
+      "titre": "Task 9",
+      "description": "Description for Task 9",
+      "startDate": "2024-05-08",
+      "endDate": "2024-05-08",
+      "status": "done",
+      "feedback": "Well done"
+    },
+    {
+      "id": 10,
+      "titre": "Task 10",
+      "description": "Description for Task 10",
+      "startDate": "2024-05-09",
+      "endDate": "2024-05-09",
+      "status": "todo",
+      "feedback": "No feedback yet"
+    },
+    {
+      "id": 11,
+      "titre": "Task 11",
+      "description": "Description for Task 11",
+      "startDate": "2024-05-10",
+      "endDate": "2024-05-10",
+      "status": "inprogress",
+      "feedback": "Pending approval"
+    },
+    {
+      "id": 12,
+      "titre": "Task 12",
+      "description": "Description for Task 12",
+      "startDate": "2024-05-11",
+      "endDate": "2024-05-11",
+      "status": "done",
+      "feedback": "Great attention to detail"
+    },
+    {
+      "id": 13,
+      "titre": "Task 13",
+      "description": "Description for Task 13",
+      "startDate": "2024-05-12",
+      "endDate": "2024-05-12",
+      "status": "todo",
+      "feedback": "No feedback yet"
+    },
+    {
+      "id": 14,
+      "titre": "Task 14",
+      "description": "Description for Task 14",
+      "startDate": "2024-05-13",
+      "endDate": "2024-05-13",
+      "status": "inprogress",
+      "feedback": "Needs more research"
+    },
+    {
+      "id": 15,
+      "titre": "Task 15",
+      "description": "Description for Task 15",
+      "startDate": "2024-05-14",
+      "endDate": "2024-05-14",
+      "status": "done",
+      "feedback": "Good job"
+    }
   ]
 
 }
