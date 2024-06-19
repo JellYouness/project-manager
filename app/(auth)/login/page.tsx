@@ -18,6 +18,8 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { AtSign, KeyRound } from "lucide-react";
 import Logo from "@/public/logo.svg";
+import { useLoginMutation } from "@/api/routes/auth/auth";
+import { useRouter } from "next/navigation";
 
 //TODO: Add validation to the form
 
@@ -31,6 +33,8 @@ const FormSchema = z.object({
 });
 
 export default function Home() {
+  const [login, { isLoading }] = useLoginMutation();
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -40,14 +44,20 @@ export default function Home() {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    login(data)
+      .then(() => {
+        router.push("/");
+        toast({
+          title: "Login successful",
+          description: "You have successfully logged in.",
+        });
+      })
+      .catch((error: any) => {
+        toast({
+          title: "Login failed",
+          description: error.message,
+        });
+      });
   }
 
   return (

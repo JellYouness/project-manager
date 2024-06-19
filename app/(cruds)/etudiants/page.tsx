@@ -25,9 +25,10 @@ import {
 import { columns } from "./Columns";
 import { useGetEtudiantsQuery } from "@/api/routes/crud/etudiants";
 import TableSkeleton from "@/components/TableSkeleton";
+import Link from "next/link";
 
 export default function Home() {
-const { data: etudiants, isLoading, isSuccess } = useGetEtudiantsQuery();
+  const { data: etudiants, isLoading, isSuccess } = useGetEtudiantsQuery();
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -58,7 +59,7 @@ const { data: etudiants, isLoading, isSuccess } = useGetEtudiantsQuery();
   return (
     <main className="w-full">
       <Card className="p-4">
-        <div className="flex items-center py-4">
+        <div className="flex justify-between items-center py-4">
           <Input
             placeholder="Filter emails..."
             value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
@@ -68,6 +69,9 @@ const { data: etudiants, isLoading, isSuccess } = useGetEtudiantsQuery();
             icon={Search}
             className="max-w-sm"
           />
+          <Link href="/etudiants/create">
+            <Button variant="default">Ajouter</Button>
+          </Link>
         </div>
         <div className="rounded-md border">
           <Table>

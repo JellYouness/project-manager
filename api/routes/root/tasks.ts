@@ -6,7 +6,7 @@ interface Task {
   description?: string;
   startDate: Date;
   endDate: Date;
-  status: "todo" | "inprogress" | "done";
+  status: "todo" | "inprogress" | "review" | "done";
   feedback?: string;
 }
 
@@ -23,8 +23,8 @@ const tasksApi = baseApi.injectEndpoints({
       }),
     }),
     updateTask: build.mutation<Task, Partial<Task>>({
-      query: ({ id, ...body }) => ({
-        url: `tasks/${id}`,
+      query: (body) => ({
+        url: `tasks/${body.id}`,
         method: "PUT",
         body,
       }),
