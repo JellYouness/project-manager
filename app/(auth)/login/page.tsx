@@ -102,13 +102,13 @@ export default function Home() {
                   </FormItem>
                 )}
               />
-              <button
+              <Button
                 type="submit"
                 disabled={form.formState.isSubmitting}
-                className="h-10 w-full flex-none btn btn-active btn-neutral"
+                className="h-10 w-full flex-none"
               >
                 Se connecter
-              </button>
+              </Button>
             </form>
           </Form>
           <div className="flex w-full items-center justify-center gap-2">
@@ -117,7 +117,7 @@ export default function Home() {
             <div className="flex h-px w-full grow shrink-0 basis-0 flex-col items-center gap-2 bg-gray-200" />
           </div>
           <Link href="/signup">
-            <button className="btn btn-active btn-link btn-sm">Sign up</button>
+            <Button variant="secondary">Sign up</Button>
           </Link>
         </div>
       </div>

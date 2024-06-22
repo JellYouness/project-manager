@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { SnackbarProvider } from "notistack";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const AuthProvider = ({
@@ -9,15 +9,15 @@ const AuthProvider = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const { token, user } = useSelector((state: any) => state.auth);
-  const localToken = localStorage.getItem("token");
   const router = useRouter();
+
   useEffect(() => {
-    if (token === null && localToken === null) {
+    if (window.localStorage.getItem("token") === null) {
       // Redirect to login page
       router.push("/login");
     }
-  }, [token, router, localToken]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <SnackbarProvider
