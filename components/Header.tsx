@@ -17,8 +17,8 @@ import { authSlice, dispatch, store } from "@/api/baseApi";
 
 const Header = () => {
   const user = localStorage.getItem("user")
-    ? localStorage.getItem("user")
-    : { username: "Not connected" };
+      ? JSON.parse(localStorage.getItem("user") as string)
+      : { username: "Not connected" };
 
   const handleLogout = () => {
     // handle logout
@@ -29,15 +29,13 @@ const Header = () => {
   };
   return (
     <header className="bg-white w-full flex items-center justify-between border-b py-3 px-6">
-      <div className="hidden md:block">Bonjour, Admin</div>
       <Badge className="text-sm" variant="secondary">
-        Groupe: #32 | Encadrant: Pr. Nabil
+        Groupe: #32 | Sujet: PFE
       </Badge>
       <div className="flex items-center gap-6">
         <Link href="/settings/profile">
           <Settings />
         </Link>
-        <Bell />
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar>
