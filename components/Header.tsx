@@ -14,16 +14,18 @@ import {
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { authSlice, dispatch, store } from "@/api/baseApi";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const [user, setUser] = useState<any>(null);
+  const router = useRouter();
   useEffect(() => {
     setUser(
-      localStorage.getItem("user")
-        ? JSON.parse(localStorage.getItem("user") as string)
+      window.localStorage.getItem("user")
+        ? JSON.parse(window.localStorage.getItem("user") as string)
         : { username: "Not connected" }
     );
-  }, [user]);
+  }, []);
 
   const handleLogout = () => {
     // handle logout
@@ -31,6 +33,8 @@ const Header = () => {
     dispatch(authSlice.actions.setUser(null));
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    // redirect to login page
+    router.push("/login");
   };
   return (
     <header className="bg-white w-full flex items-center justify-between border-b py-3 px-6">
