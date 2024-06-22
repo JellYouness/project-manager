@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Bell, Settings } from "lucide-react";
 import Link from "next/link";
@@ -16,9 +16,14 @@ import { Badge } from "./ui/badge";
 import { authSlice, dispatch, store } from "@/api/baseApi";
 
 const Header = () => {
-  const user = localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user") as string)
-      : { username: "Not connected" };
+  const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+    setUser(
+      localStorage.getItem("user")
+        ? JSON.parse(localStorage.getItem("user") as string)
+        : { username: "Not connected" }
+    );
+  }, [user]);
 
   const handleLogout = () => {
     // handle logout
@@ -29,7 +34,7 @@ const Header = () => {
   };
   return (
     <header className="bg-white w-full flex items-center justify-between border-b py-3 px-6">
-      <Badge className="text-sm" variant="secondary">
+      <Badge className="text-sm" variant="default">
         Groupe: #32 | Sujet: PFE
       </Badge>
       <div className="flex items-center gap-6">
@@ -37,9 +42,9 @@ const Header = () => {
           <Settings />
         </Link>
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger className="flex flex-col items-center">
             <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage src="/userlogo.jpg" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <Badge variant="default">{user?.username}</Badge>
