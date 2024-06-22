@@ -1,13 +1,19 @@
 import { baseApi } from "@/api/baseApi";
 
-
 const etudiantApi: any = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getEtudiants: builder.query({
       query: () => "list-etudiants",
+      transformResponse: (response: any) => response.etudiants,
+      providesTags: ["etudiant"],
+    }),
+    getEtudiantsNoEquipe: builder.query({
+      query: () => `list-etudiants-sans-equipe`,
+      transformResponse: (response: any) => response.etudiants,
     }),
     getEtudiant: builder.query({
       query: (id: string) => `etudiant-infos/${id}`,
+      transformResponse: (response: any) => response.etudiant,
     }),
     createEtudiant: builder.mutation({
       query: (etudiant: any) => ({
@@ -15,6 +21,7 @@ const etudiantApi: any = baseApi.injectEndpoints({
         method: "POST",
         body: etudiant,
       }),
+      invalidatesTags: ["etudiant"],
     }),
     updateEtudiant: builder.mutation({
       query: (etudiant: any) => ({
@@ -22,20 +29,23 @@ const etudiantApi: any = baseApi.injectEndpoints({
         method: "PUT",
         body: etudiant,
       }),
+      invalidatesTags: ["etudiant"],
     }),
     deleteEtudiant: builder.mutation({
       query: (id: string) => ({
         url: `delete-etudiant/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["etudiant"],
     }),
   }),
 });
 
 export const {
-    useGetEtudiantsQuery,
-    useGetEtudiantQuery,
-    useCreateEtudiantMutation,
-    useUpdateEtudiantMutation,
-    useDeleteEtudiantMutation,
+  useGetEtudiantsQuery,
+  useGetEtudiantsNoEquipeQuery,
+  useGetEtudiantQuery,
+  useCreateEtudiantMutation,
+  useUpdateEtudiantMutation,
+  useDeleteEtudiantMutation,
 } = etudiantApi;

@@ -12,110 +12,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 
-export const data: Etudiant[] = [
-  {
-    id: "1",
-    nom: "Lefebvre",
-    prenom: "Emilie",
-    email: "emilie.lefebvre@example.com",
-    cin: "EE123456",
-    cne: "A123456789",
-    filiere: "SID",
-  },
-  {
-    id: "2",
-    nom: "Dupont",
-    prenom: "Lucas",
-    email: "lucas.dupont@example.com",
-    cin: "EE234567",
-    cne: "A234567890",
-    filiere: "BD",
-  },
-  {
-    id: "3",
-    nom: "Bernard",
-    prenom: "Marie",
-    email: "marie.bernard@example.com",
-    cin: "EE345678",
-    cne: "A345678901",
-    filiere: "RES",
-  },
-  {
-    id: "4",
-    nom: "Petit",
-    prenom: "Thomas",
-    email: "thomas.petit@example.com",
-    cin: "EE456789",
-    cne: "A456789012",
-    filiere: "BD",
-  },
-  {
-    id: "5",
-    nom: "Garcia",
-    prenom: "Laura",
-    email: "laura.garcia@example.com",
-    cin: "EE567890",
-    cne: "A567890123",
-    filiere: "RES",
-  },
-  {
-    id: "6",
-    nom: "Robert",
-    prenom: "Julien",
-    email: "julien.robert@example.com",
-    cin: "EE678901",
-    cne: "A678901234",
-    filiere: "SID",
-  },
-  {
-    id: "7",
-    nom: "Rousseau",
-    prenom: "Sophie",
-    email: "sophie.rousseau@example.com",
-    cin: "EE789012",
-    cne: "A789012345",
-    filiere: "BD",
-  },
-  {
-    id: "8",
-    nom: "Blanc",
-    prenom: "Nicolas",
-    email: "nicolas.blanc@example.com",
-    cin: "EE890123",
-    cne: "A890123456",
-    filiere: "RES",
-  },
-  {
-    id: "9",
-    nom: "Moreau",
-    prenom: "Chloé",
-    email: "chloe.moreau@example.com",
-    cin: "EE901234",
-    cne: "A901234567",
-    filiere: "SID",
-  },
-  {
-    id: "10",
-    nom: "Leroy",
-    prenom: "Alexandre",
-    email: "alexandre.leroy@example.com",
-    cin: "EE012345",
-    cne: "A012345678",
-    filiere: "BD",
-  },
-];
-
-export type Etudiant = {
+export type Enseignant = {
   id: string;
   nom: string;
   prenom: string;
   email: string;
-  cin: string;
-  cne: string;
-  filiere: "SID" | "RES" | "BD";
+  specialite: "SID" | "RES" | "BD";
 };
 
-export const columns: ColumnDef<Etudiant>[] = [
+export const columns: ColumnDef<Enseignant>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => {
@@ -154,15 +59,17 @@ export const columns: ColumnDef<Etudiant>[] = [
     cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
-    accessorKey: "cne",
-    header: () => <div>CNE</div>,
-    cell: ({ row }) => <div className="font-medium">{row.getValue("cne")}</div>,
+    accessorKey: "encadrant_code",
+    header: () => <div>Code</div>,
+    cell: ({ row }) => (
+      <div className="font-medium">{row.getValue("encadrant_code")}</div>
+    ),
   },
   {
-    accessorKey: "filiere",
-    header: () => <div>Filiere</div>,
+    accessorKey: "specialite",
+    header: () => <div>specialite</div>,
     cell: ({ row }) => (
-      <div className="font-medium">{row.getValue("filiere")}</div>
+      <div className="font-medium">{row.getValue("specialite")}</div>
     ),
   },
   {
@@ -181,7 +88,7 @@ export const columns: ColumnDef<Etudiant>[] = [
           <DropdownMenuItem>
             <Link
               className="flex flex-center gap-3"
-              href={`/etudiants/${row.id}`}
+              href={`/enseignants/${row.getValue("id")}`}
             >
               <Pencil className="size-5" />
               Modifier
@@ -190,19 +97,10 @@ export const columns: ColumnDef<Etudiant>[] = [
           <DropdownMenuItem>
             <Link
               className="flex flex-center gap-3"
-              href={`/etudiants/${row.id}`}
+              href={`/enseignants/${row.getValue("id")}`}
             >
               <Trash className="size-5" />
               Supprimer
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link
-              className="flex flex-center gap-3"
-              href={`/etudiants/${row.id}`}
-            >
-              <Eye className="size-5" />
-              Voir
             </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>

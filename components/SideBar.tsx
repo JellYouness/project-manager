@@ -56,8 +56,8 @@ const SideBar = () => {
             variant: "ghost",
           },
           {
-            title: "Dashboard",
-            href: "/dashboard",
+            title: "Taches",
+            href: "/tasks",
             icon: LayoutDashboard,
             variant: "default",
           },

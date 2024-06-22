@@ -1,13 +1,18 @@
 "use client";
 import { ApiProvider } from "@reduxjs/toolkit/query/react";
-import { baseApi } from "@/api/baseApi";
+import { baseApi, store } from "@/api/baseApi";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { Provider } from "react-redux";
 
 const ReduxProvider = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  return <ApiProvider api={baseApi}>{children}</ApiProvider>;
+  return (
+      <Provider store={store}>{children}</Provider>
+  );
 };
 
 export default ReduxProvider;

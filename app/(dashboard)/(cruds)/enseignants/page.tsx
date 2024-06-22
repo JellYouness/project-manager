@@ -22,10 +22,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { columns, data } from "./Columns";
+import { columns } from "./Columns";
+import { useGetEnseignantsQuery } from "@/api/routes/crud/enseignants";
+import TableSkeleton from "@/components/TableSkeleton";
 import Link from "next/link";
 
 export default function Home() {
+  const { data: enseignants, isLoading, isSuccess } = useGetEnseignantsQuery();
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -36,7 +40,7 @@ export default function Home() {
   });
 
   const table = useReactTable({
-    data,
+    data: enseignants ?? [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -55,7 +59,7 @@ export default function Home() {
   return (
     <main className="w-full">
       <Card className="p-4">
-        <div className="flex justify-center items-center py-4">
+        <div className="flex justify-between items-center py-4">
           <Input
             placeholder="Filter emails..."
             value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
@@ -65,8 +69,8 @@ export default function Home() {
             icon={Search}
             className="max-w-sm"
           />
-          <Link href="/groupes/create">
-            <Button>Ajouter</Button>
+          <Link href="/enseignants/create">
+            <Button variant="default">Ajouter</Button>
           </Link>
         </div>
         <div className="rounded-md border">
@@ -90,7 +94,9 @@ export default function Home() {
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows?.length ? (
+              {/*------------------ Results -------------------------*/}
+              {isSuccess &&
+                table.getRowModel().rows?.length &&
                 table.getRowModel().rows.map((row) => (
                   <TableRow key={row.id}>
                     {row.getAllCells().map((cell) => (
@@ -102,8 +108,10 @@ export default function Home() {
                       </TableCell>
                     ))}
                   </TableRow>
-                ))
-              ) : (
+                ))}
+
+              {/*----------------- Empty Results -----------------*/}
+              {isSuccess && table.getRowModel().rows?.length == 0 && (
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
@@ -113,6 +121,9 @@ export default function Home() {
                   </TableCell>
                 </TableRow>
               )}
+
+              {/* ---------------- Loading state -------------------- */}
+              {isLoading && <TableSkeleton colSpan={columns.length} />}
             </TableBody>
           </Table>
         </div>

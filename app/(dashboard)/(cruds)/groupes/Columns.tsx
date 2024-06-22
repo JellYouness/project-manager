@@ -115,7 +115,7 @@ export type Etudiant = {
   filiere: "SID" | "RES" | "BD";
 };
 
-export const columns: ColumnDef<Etudiant>[] = [
+export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => {
@@ -133,28 +133,32 @@ export const columns: ColumnDef<Etudiant>[] = [
   },
   {
     id: "Etudiant #1",
-    accessorFn: (row) => `${row.nom} ${row.prenom}`,
+    accessorFn: (row) => `${row.etudiant1?.nom} ${row.etudiant1?.prenom}`,
     cell: ({ row }) => (
       <div className="font-medium">{row.getValue("Etudiant #1")}</div>
     ),
   },
   {
     id: "Etudiant #2",
-    accessorFn: (row) => `${row.nom} ${row.prenom}`,
+    accessorFn: (row) => `${row.etudiant2?.nom} ${row.etudiant2?.prenom}`,
     cell: ({ row }) => (
       <div className="font-medium">{row.getValue("Etudiant #2")}</div>
     ),
   },
   {
     id: "Etudiant #3",
-    accessorFn: (row) => `${row.nom} ${row.prenom}`,
+    accessorFn: (row) => `${row.etudiant3?.nom} ${row.etudiant3?.prenom}`,
     cell: ({ row }) => (
       <div className="font-medium">{row.getValue("Etudiant #3")}</div>
     ),
   },
   {
     id: "Encadrant",
-    accessorFn: (row) => `${row.nom} ${row.prenom}`,
+    accessorFn: (row) => {
+      if (row.encadrant)
+        return `${row.encadrant?.nom} ${row.encadrant?.prenom}`;
+      else return "Pas d'encadrant";
+    },
     cell: ({ row }) => (
       <div className="font-medium">{row.getValue("Encadrant")}</div>
     ),
@@ -175,28 +179,19 @@ export const columns: ColumnDef<Etudiant>[] = [
           <DropdownMenuItem>
             <Link
               className="flex flex-center gap-3"
-              href={`/etudiants/${row.id}`}
-            >
-              <Pencil className="size-5" />
-              Modifier
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link
-              className="flex flex-center gap-3"
-              href={`/etudiants/${row.id}`}
-            >
-              <Trash className="size-5" />
-              Supprimer
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link
-              className="flex flex-center gap-3"
-              href={`/etudiants/${row.id}`}
+              href={`/groupes/${row.getValue("id")}`}
             >
               <Eye className="size-5" />
               Voir
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              className="flex flex-center gap-3"
+              href={`/groupes/${row.getValue("id")}/add-sujet`}
+            >
+              <Pencil className="size-5" />
+              Assigner sujet
             </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>

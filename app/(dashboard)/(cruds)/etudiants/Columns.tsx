@@ -11,16 +11,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { useState } from "react";
+import { useDeleteEtudiantMutation } from "@/api/routes/crud/etudiants";
 
-export type Enseignant = {
+export type Etudiant = {
   id: string;
   nom: string;
   prenom: string;
   email: string;
-  specialite: "SID" | "RES" | "BD";
+  codeApoge: number;
+  cin: string;
+  cne: string;
+  filiere: "SID" | "RES" | "BD";
 };
 
-export const columns: ColumnDef<Enseignant>[] = [
+export const columns: ColumnDef<Etudiant>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => {
@@ -59,10 +64,22 @@ export const columns: ColumnDef<Enseignant>[] = [
     cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
-    accessorKey: "specialite",
-    header: () => <div>specialite</div>,
+    accessorKey: "cne",
+    header: () => <div>CNE</div>,
+    cell: ({ row }) => <div className="font-medium">{row.getValue("cne")}</div>,
+  },
+  {
+    accessorKey: "codeApoge",
+    header: () => <div>Code Apoge</div>,
     cell: ({ row }) => (
-      <div className="font-medium">{row.getValue("specialite")}</div>
+      <div className="font-medium">{row.getValue("codeApoge")}</div>
+    ),
+  },
+  {
+    accessorKey: "filiere",
+    header: () => <div>Filiere</div>,
+    cell: ({ row }) => (
+      <div className="font-medium">{row.getValue("filiere")}</div>
     ),
   },
   {
@@ -81,29 +98,17 @@ export const columns: ColumnDef<Enseignant>[] = [
           <DropdownMenuItem>
             <Link
               className="flex flex-center gap-3"
-              href={`/enseignants/${row.id}`}
+              href={`/etudiants/${row.getValue("id")}`}
             >
               <Pencil className="size-5" />
               Modifier
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link
-              className="flex flex-center gap-3"
-              href={`/enseignants/${row.id}`}
-            >
+            <Button className="flex flex-center gap-3" onClick={() => {}}>
               <Trash className="size-5" />
               Supprimer
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link
-              className="flex flex-center gap-3"
-              href={`/enseignants/${row.id}`}
-            >
-              <Eye className="size-5" />
-              Voir
-            </Link>
+            </Button>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

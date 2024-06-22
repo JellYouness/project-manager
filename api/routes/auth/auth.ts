@@ -1,4 +1,5 @@
-import { baseApi } from "@/api/baseApi";
+import { authSlice, baseApi, dispatch } from "@/api/baseApi";
+import { enqueueSnackbar } from "notistack";
 
 interface AuthResponse {
   id: string;
@@ -15,18 +16,22 @@ const authApi: any = baseApi.injectEndpoints({
         method: "POST",
         body: credentials,
       }),
-      transformResponse: (response: AuthResponse) => {
-        const { id, username, token, type } = response;
-        return { id, username, token, type };
-      },
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           // Store the token and user info in the Redux state or localStorage
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("user", JSON.stringify(data));
+          if (data) {
+            const { token } = data;
+            // Assuming you have an authSlice with token and user states
+            dispatch(authSlice.actions.setToken(token));
+            dispatch(authSlice.actions.setUser(data));
+            localStorage.setItem("token", token);
+            localStorage.setItem("user", JSON.stringify(data));
+            enqueueSnackbar("Login successful", { variant: "success" });
+          }
         } catch (err) {
           console.error("Login failed: ", err);
+          enqueueSnackbar(`Login failed: ${err}`, { variant: "error" });
         }
       },
     }),

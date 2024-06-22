@@ -23,11 +23,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { columns } from "./Columns";
-import { useGetEnseignantsQuery } from "@/api/routes/crud/enseignants";
+import Link from "next/link";
+import { useGetSujetsQuery } from "@/api/routes/crud/sujets";
 import TableSkeleton from "@/components/TableSkeleton";
 
 export default function Home() {
-  const { data: enseignants, isLoading, isSuccess } = useGetEnseignantsQuery();
+  const { data: sujets, isLoading, isSuccess } = useGetSujetsQuery();
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -39,7 +40,7 @@ export default function Home() {
   });
 
   const table = useReactTable({
-    data: enseignants ?? [],
+    data: sujets ?? [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -58,16 +59,19 @@ export default function Home() {
   return (
     <main className="w-full">
       <Card className="p-4">
-        <div className="flex items-center py-4">
+        <div className="flex justify-center items-center py-4">
           <Input
-            placeholder="Filter emails..."
-            value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+            placeholder="Filter Ids..."
+            value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
-              table.getColumn("email")?.setFilterValue(event.target.value)
+              table.getColumn("id")?.setFilterValue(event.target.value)
             }
             icon={Search}
             className="max-w-sm"
           />
+          <Link href="/sujets/create">
+            <Button>Ajouter</Button>
+          </Link>
         </div>
         <div className="rounded-md border">
           <Table>
@@ -105,7 +109,6 @@ export default function Home() {
                     ))}
                   </TableRow>
                 ))}
-
               {/*----------------- Empty Results -----------------*/}
               {isSuccess && table.getRowModel().rows?.length == 0 && (
                 <TableRow>
