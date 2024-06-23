@@ -11,11 +11,13 @@ export interface Task {
   document?: any;
   documents?: [];
 }
+const type = JSON.parse(window.localStorage.getItem("user") as string).type;
 
 const tasksApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getTasks: build.query<Task[], void>({
       query: () => ({
+        //url: type === "etudiant" ? "etudiant/taches-assignees": "encadrant/projets/2/taches",
         url: "etudiant/taches-assignees",
         method: "GET",
       }),

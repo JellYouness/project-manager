@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Check, Eye, FilePenLine, Pencil, Plus } from "lucide-react";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import {
   Task,
   useEncadrantUpdateTaskMutation,
@@ -16,6 +16,7 @@ import AddTaskDialog from "./AddDialog";
 import { Input } from "@/components/ui/input";
 import TaskDetailsDialog from "./TaskDialog";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   const { data: tasks } = useGetTasksQuery();
@@ -27,6 +28,11 @@ export default function Home() {
   const [addTaskDialog, setAddTaskDialog] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [viewTask, setViewTask] = useState<Task | null>(null);
+  const [userType, setUserType] = useState(null);
+
+  useEffect(() => {
+    setUserType(JSON.parse(localStorage.getItem("user")!).type);
+  }, [userType]);
 
   const [file, setFile] = useState<File | null>(null);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +84,13 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col items-center gap-2">
                     <button
-                      className="bg-blue-500 hover:bg-blue-600 text-white p-1 rounded z-20"
+                      className={cn(
+                        "p-1 rounded z-20",
+                        userType === "encadrant"
+                          ? "bg-transparent text-transparent"
+                          : "bg-blue-500 hover:bg-blue-600 text-white "
+                      )}
+                      disabled={userType === "encadrant"}
                       onClick={() => setInProgress(task.id!)}
                     >
                       <Plus className="size-4" />
@@ -121,7 +133,13 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col items-center gap-2">
                     <button
-                      className="bg-green-500 hover:bg-green-600 text-white p-1 rounded"
+                      className={cn(
+                        "p-1 rounded z-20",
+                        userType === "encadrant"
+                          ? "bg-transparent text-transparent"
+                          : "bg-green-500 hover:bg-green-600 text-white "
+                      )}
+                      disabled={userType === "encadrant"}
                       onClick={() => setReview(task.id!)}
                     >
                       <FilePenLine className="size-4" />
@@ -164,7 +182,13 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col items-center gap-2">
                     <button
-                      className="bg-green-500 hover:bg-green-600 text-white p-1 rounded"
+                      className={cn(
+                        "p-1 rounded z-20",
+                        userType === "etudiant"
+                          ? "bg-transparent text-transparent"
+                          : "bg-cyan-500 hover:bg-cyan-600 text-black "
+                      )}
+                      disabled={userType === "etudiant"}
                       onClick={() => setDone(task.id!)}
                     >
                       <Check className="size-4" />
@@ -267,7 +291,6 @@ export default function Home() {
             <Label>Document:</Label>
             <Input
               placeholder="document"
-              
               type="file"
               accept=".pdf"
               onChange={handleFileChange}

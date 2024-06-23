@@ -11,6 +11,10 @@ const enseignantApi: any = baseApi.injectEndpoints({
       query: (id: string) => `encadrant-infos/${id}`,
       transformResponse: (response: any) => response.encadrant,
     }),
+    getEquipes: builder.query({
+      query: (id: string) => `encadrant/equipes`,
+      transformResponse: (response: any) => response.equipes,
+    }),
     createEnseignant: builder.mutation({
       query: (enseignant: any) => ({
         url: `add-encadrant`,
@@ -40,6 +44,7 @@ const enseignantApi: any = baseApi.injectEndpoints({
 export const {
   useGetEnseignantsQuery,
   useGetEnseignantQuery,
+  useGetEquipesQuery,
   useCreateEnseignantMutation,
   useUpdateEnseignantMutation,
   useDeleteEnseignantMutation,
