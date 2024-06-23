@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { useGetEquipesQuery } from "@/api/routes/crud/enseignants";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useGetTasksQuery } from "@/api/routes/root/tasks";
+import { baseApi, dispatch } from "@/api/baseApi";
 
 const cards = [
   {
@@ -92,9 +94,15 @@ export default function Home() {
     setUserType(JSON.parse(localStorage.getItem("user") as string).type);
   }, [userType]);
 
-  const handleProjetClick = (id: any) => {
-    localStorage.setItem("projet", JSON.stringify(id));
-    router.push("/tasks");
+  const handleProjetClick = (equipe: any) => {
+    if (equipe.sujet) {
+      window.localStorage.setItem("projet", equipe.id);
+      window.localStorage.setItem("sujet", equipe.sujet)
+      dispatch(baseApi.util.invalidateTags(["task"]));
+      router.push("/tasks");
+    } else {
+      router.push(`/groupes/${equipe.id}/add-sujet`);
+    }
   };
 
   return (
@@ -105,7 +113,7 @@ export default function Home() {
             <Card
               key={index}
               onClick={() => {
-                handleProjetClick(equipe.id);
+                handleProjetClick(equipe);
               }}
               className="flex w-full flex-col items-center rounded bg-white shadow-default hover:bg-gray-100 cursor-pointer"
             >
@@ -122,9 +130,15 @@ export default function Home() {
               <CardContent className="flex w-full flex-col items-start p-2">
                 <div className="flex w-full flex-row items-center justify-center gap-4 p-4">
                   <ul className="flex flex-row items-start gap-6 list-disc">
-                    <li className="text-sm">{equipe.etudiant1.nom}</li>
-                    <li className="text-sm">{equipe.etudiant2.nom}</li>
-                    <li className="text-sm">{equipe.etudiant3.nom}</li>
+                    <li className="text-sm">
+                      {equipe.etudiant1.nom + " " + equipe.etudiant1.prenom}
+                    </li>
+                    <li className="text-sm">
+                      {equipe.etudiant2.nom + " " + equipe.etudiant2.prenom}
+                    </li>
+                    <li className="text-sm">
+                      {equipe.etudiant3.nom + " " + equipe.etudiant3.prenom}
+                    </li>
                   </ul>
                 </div>
               </CardContent>
@@ -132,7 +146,7 @@ export default function Home() {
           ))}
         </div>
       )}
-      {userType === "etudiant" && (
+      {userType !== "encadrant" && (
         <>
           <div className="grid gap-4 md:grid-cols-1 md:gap-8 lg:grid-cols-3">
             {cards.map((card, index) => (

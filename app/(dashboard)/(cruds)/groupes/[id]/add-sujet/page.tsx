@@ -20,6 +20,7 @@ import {
   useAssignSujetMutation,
   useGetSujetsQuery,
 } from "@/api/routes/crud/sujets";
+import { useGetTasksQuery } from "@/api/routes/root/tasks";
 
 const FormSchema = z.object({
   sujet_id: z.number(),
@@ -52,7 +53,16 @@ export default function Home({ params }: { params: { id: number } }) {
       enqueueSnackbar("Sujet assigné avec succès", {
         variant: "success",
       });
-      router.push("/groupes");
+      if (
+        JSON.parse(window.localStorage.getItem("user") as string).type ===
+        "encadrant"
+      ) {
+        //@ts-ignore
+        window.localStorage.setItem("projet", params.id);
+        router.push("/tasks");
+      }else {
+        router.push("/groupes");
+      }
     }
   }, [isSuccess, enqueueSnackbar, router]);
 

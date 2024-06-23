@@ -14,6 +14,7 @@ const enseignantApi: any = baseApi.injectEndpoints({
     getEquipes: builder.query({
       query: (id: string) => `encadrant/equipes`,
       transformResponse: (response: any) => response.equipes,
+      providesTags: ["myequipes"],
     }),
     createEnseignant: builder.mutation({
       query: (enseignant: any) => ({

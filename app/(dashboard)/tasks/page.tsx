@@ -19,7 +19,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 export default function Home() {
-  const { data: tasks } = useGetTasksQuery();
+  const { data: tasks, refetch } = useGetTasksQuery();
   const [updateTask] = useUpdateTaskMutation();
   const [encadrantUpdateTask] = useEncadrantUpdateTaskMutation();
   const [inProgress, setInProgress] = useState<number | null>(null);

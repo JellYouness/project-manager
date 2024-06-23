@@ -39,9 +39,14 @@ const Header = () => {
   };
   return (
     <header className="bg-white w-full flex items-center justify-between border-b py-3 px-6">
-      <Badge className="text-sm" variant="default">
-        Groupe: #32 | Sujet: PFE
-      </Badge>
+      {user?.type === "encadrant" ? (
+        <Badge className="text-sm" variant="default">
+          Groupe: #{window?.localStorage?.getItem("projet")} | Sujet:{" "}
+          {window?.localStorage?.getItem("sujet")}
+        </Badge>
+      ) : (
+        <div />
+      )}
       <div className="flex items-center gap-6">
         <Link
           className={buttonVariants({

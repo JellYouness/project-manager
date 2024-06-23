@@ -1,4 +1,5 @@
 import { baseApi } from "@/api/baseApi";
+import { RefreshCcw } from "lucide-react";
 
 export interface Task {
   id?: number;
@@ -17,8 +18,10 @@ const tasksApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getTasks: build.query<Task[], void>({
       query: () => ({
-        //url: type === "etudiant" ? "etudiant/taches-assignees": "encadrant/projets/2/taches",
-        url: "etudiant/taches-assignees",
+        url:
+          type === "etudiant"
+            ? "etudiant/taches-assignees"
+            : `encadrant/projets/${JSON.parse(window.localStorage.getItem("projet") as string)}/taches`,
         method: "GET",
       }),
       transformResponse: (response: any) => response.taches,

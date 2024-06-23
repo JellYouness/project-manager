@@ -31,9 +31,9 @@ const sujetApi: any = baseApi.injectEndpoints({
       query: (body: any) => ({
         url: `encadrant/equipes/${body.id}/assign-sujet`,
         method: "POST",
-        body: body,
+        body: { ...body, etat: "encours" },
       }),
-      invalidatesTags: ["sujet"],
+      invalidatesTags: ["sujet", "task", "myequipes"],
     }),
   }),
 });
