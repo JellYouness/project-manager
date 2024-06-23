@@ -2,9 +2,10 @@ export function stringToAvatar(string: string) {
   let hash = 0;
 
   /* eslint-disable no-bitwise */
-  for (let i = 0; i < string.length; i++) {
-    hash = (hash << 5) + hash + string.charCodeAt(i);
-  }
+  if (string?.length)
+    for (let i = 0; i < string.length; i++) {
+      hash = (hash << 5) + hash + string.charCodeAt(i);
+    }
   /* eslint-enable no-bitwise */
 
   let red = (hash >> 16) & 0xff; // Extract red value
@@ -29,7 +30,7 @@ export function stringToAvatar(string: string) {
     blue.toString(16).padStart(2, "0");
 
   // Split the string into words
-  const words = string.split(" ");
+  const words = string ? string.split(" ") : "user name".split(" ");
 
   // Extract initials safely
   const initials =
