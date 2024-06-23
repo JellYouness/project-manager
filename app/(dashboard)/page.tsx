@@ -101,8 +101,9 @@ export default function Home() {
     <main className="h-full">
       {userType === "encadrant" && (
         <div className="flex gap-7 mt-7">
-          {equipes?.map((equipe: any) => (
+          {equipes?.map((equipe: any, index: any) => (
             <Card
+              key={index}
               onClick={() => {
                 handleProjetClick(equipe.id);
               }}
