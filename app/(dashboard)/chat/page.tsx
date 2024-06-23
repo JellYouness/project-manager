@@ -37,8 +37,14 @@ export default function Home() {
   const [senderId, setSenderId] = useState<number>(1);
   const [recipientId, setRecipientId] = useState<number | null>(null);
 
+  useEffect(() => {}, []);
+
   //fetch chats for the user
   useEffect(() => {
+    const supabase_id = JSON.parse(
+      window.localStorage.getItem("user") as string
+    ).supabase;
+    setSenderId(supabase_id);
     const fetchInitialChats = async () => {
       const fetchedChats = await fetchChats(senderId);
       if (fetchedChats) {
