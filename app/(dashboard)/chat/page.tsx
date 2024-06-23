@@ -123,20 +123,20 @@ export default function Home() {
                 }`}
                 onClick={() =>
                   setRecipientId(
-                    senderId === chat.from.id ? chat.to.id : chat.from.id
+                    senderId === chat.from.id ? chat.to?.id : chat.from?.id
                   )
                 }
               >
                 <Avatar>
                   <AvatarFallback
                     {...stringToAvatar(
-                      senderId === chat.from.id ? chat.to.name : chat.from.name
+                      senderId === chat.from?.id ? chat.to?.name : chat.from?.name
                     )}
                   />
                 </Avatar>
                 <div>
                   <h4 className="text-sm font-medium">
-                    {senderId === chat.from.id ? chat.to.name : chat.from.name}
+                    {senderId === chat.from?.id ? chat.to?.name : chat.from?.name}
                   </h4>
                   <p
                     className={cn(
@@ -190,9 +190,9 @@ export default function Home() {
                     <Avatar className="size-7">
                       <AvatarFallback
                         {...stringToAvatar(
-                          senderId === message.from.id
-                            ? message.to.name
-                            : message.from.name
+                          senderId === message.from?.id
+                            ? message.to?.name
+                            : message.from?.name
                         )}
                       />
                     </Avatar>
