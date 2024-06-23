@@ -12,12 +12,6 @@ const links = [
     variant: "ghost",
   },
   {
-    title: "Notifications",
-    href: "/settings/notifications",
-    icon: BellRing,
-    variant: "default",
-  },
-  {
     title: "Team members",
     href: "/settings/team",
     icon: Users,

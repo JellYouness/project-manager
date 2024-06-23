@@ -25,7 +25,11 @@ import { Card } from "@/components/ui/card";
 import { useSnackbar } from "notistack";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useCreateEnseignantMutation } from "@/api/routes/crud/enseignants";
+import {
+  useCreateEnseignantMutation,
+  useUpdateEnseignantMutation,
+} from "@/api/routes/crud/enseignants";
+import { addUser } from "@/api/fetchers/chatServices";
 
 const FormSchema = z.object({
   nom: z.string().min(2, {
@@ -46,7 +50,8 @@ const FormSchema = z.object({
 
 export default function Home() {
   const { enqueueSnackbar } = useSnackbar();
-  const [createEnsignant, { isSuccess }] = useCreateEnseignantMutation();
+  const [createEnseignant, { isSuccess }] = useCreateEnseignantMutation();
+  const [updateEnseignant] = useUpdateEnseignantMutation();
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -61,7 +66,16 @@ export default function Home() {
   });
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    await createEnsignant(data);
+    await createEnseignant(data).then(async (e: any) => {
+      await addUser(data).then(async (ev: any) => {
+        await updateEnseignant({
+          id: e.data?.id,
+          supabase_id: ev[0]?.id,
+        }).then(() => {
+          console.log("done");
+        });
+      });
+    });
   };
 
   useEffect(() => {

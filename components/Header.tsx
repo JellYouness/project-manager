@@ -11,14 +11,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { authSlice, dispatch, store } from "@/api/baseApi";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Header = () => {
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
+  const pathName = usePathname();
   useEffect(() => {
     setUser(
       window.localStorage.getItem("user")
@@ -42,11 +43,17 @@ const Header = () => {
         Groupe: #32 | Sujet: PFE
       </Badge>
       <div className="flex items-center gap-6">
-        <Link href="/settings/profile">
+        <Link
+          className={buttonVariants({
+            variant: "/settings" === pathName ? "default" : "ghost",
+            size: "icon",
+          })}
+          href="/settings"
+        >
           <Settings />
         </Link>
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex flex-col items-center">
+          <DropdownMenuTrigger className="flex flex-col items-center p-1 pb-2 rounded-lg hover:bg-gray-200">
             <Avatar>
               <AvatarImage src="/userlogo.jpg" />
               <AvatarFallback>CN</AvatarFallback>

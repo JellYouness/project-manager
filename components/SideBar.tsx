@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import {
   Calendar,
@@ -21,34 +21,21 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 const SideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [links, setLinks] = useState<any>([]);
 
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   function toggleSidebar() {
     setIsCollapsed(!isCollapsed);
   }
-  return (
-    <div className="bg-[#333238] text-white relative min-w-14 lg:min-w-20 h-full border-r px-3 pb-10 pt-8">
-      {!isMobile && (
-        <div className="absolute right-[-20px] top-7">
-          <Button
-            onClick={toggleSidebar}
-            variant="secondary"
-            className="rounded-full p-2"
-          >
-            <ChevronRight />
-          </Button>
-        </div>
-      )}
-      <div className="flex items-center justify-center gap-2 pb-4">
-        <Image className="w-10 flex-none" src={Logo} alt="" />
-        {/* {!isCollapsed && !mobileWidth && (
-          <h1 className="text-xl font-bold">Manager</h1>
-        )} */}
-      </div>
-      <Nav
-        isCollapsed={isMobile ? true : isCollapsed}
-        links={[
+
+  useEffect(() => {
+    if (window.localStorage.getItem("user")) {
+      const userType = JSON.parse(
+        window.localStorage.getItem("user") as string
+      )?.type;
+      if (userType === "etudiant" || userType === "encadrant") {
+        setLinks([
           {
             title: "Home",
             href: "/",
@@ -79,6 +66,17 @@ const SideBar = () => {
             icon: MessageCircle,
             variant: "default",
           },
+        ])
+      }
+    
+      if (userType === "admin") {
+        setLinks([
+          {
+            title: "Home",
+            href: "/",
+            icon: Home,
+            variant: "ghost",
+          },
           {
             title: "Etudiants",
             href: "/etudiants",
@@ -103,7 +101,34 @@ const SideBar = () => {
             icon: Users,
             variant: "default",
           },
-        ]}
+        ])
+      }
+    }
+    }, []
+  );
+
+  return (
+    <div className="bg-[#333238] text-white relative min-w-14 lg:min-w-20 h-full border-r px-3 pb-10 pt-8">
+      {!isMobile && (
+        <div className="absolute right-[-20px] top-7">
+          <Button
+            onClick={toggleSidebar}
+            variant="secondary"
+            className="rounded-full p-2"
+          >
+            <ChevronRight />
+          </Button>
+        </div>
+      )}
+      <div className="flex items-center justify-center gap-2 pb-4">
+        <Image className="w-10 flex-none" src={Logo} alt="" />
+        {/* {!isCollapsed && !mobileWidth && (
+          <h1 className="text-xl font-bold">Manager</h1>
+        )} */}
+      </div>
+      <Nav
+        isCollapsed={isMobile ? true : isCollapsed}
+        links={links}
       />
     </div>
   );

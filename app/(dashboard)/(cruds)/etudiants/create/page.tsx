@@ -24,9 +24,13 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import { SnackbarProvider, useSnackbar } from "notistack";
-import { useCreateEtudiantMutation } from "@/api/routes/crud/etudiants";
+import {
+  useCreateEtudiantMutation,
+  useUpdateEtudiantMutation,
+} from "@/api/routes/crud/etudiants";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { addUser } from "@/api/fetchers/chatServices";
 
 const FormSchema = z.object({
   nom: z.string().min(2, {
@@ -54,6 +58,7 @@ const FormSchema = z.object({
 export default function Home() {
   const { enqueueSnackbar } = useSnackbar();
   const [createEtudiant, { isSuccess }] = useCreateEtudiantMutation();
+  const [updateEtudiant] = useUpdateEtudiantMutation();
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -70,7 +75,18 @@ export default function Home() {
   });
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    await createEtudiant({ codeApoge: `${data.codeApoge}`, ...data });
+    await createEtudiant({ codeApoge: `${data.codeApoge}`, ...data }).then(
+      async (e: any) => {
+        await addUser(data).then(async (ev: any) => {
+          await updateEtudiant({
+            id: e.data?.id,
+            supabase_id: ev[0]?.id,
+          }).then(() => {
+            console.log("done");
+          });
+        });
+      }
+    );
   };
 
   useEffect(() => {
@@ -78,6 +94,7 @@ export default function Home() {
       enqueueSnackbar("Etudiant ajouté avec succès", {
         variant: "success",
       });
+
       router.push("/etudiants");
     }
   }, [isSuccess, enqueueSnackbar, router]);

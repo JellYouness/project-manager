@@ -21,36 +21,75 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Label } from "@radix-ui/react-label";
-import { useEffect } from "react";
-
-const chats = [
-  {
-    name: "John Doe",
-    message: "Hey, how are you?",
-    avatar: "",
-    selected: true,
-  },
-  {
-    name: "Jamal Crowford",
-    message: "Hey, what's up?",
-    avatar: "",
-  },
-  {
-    name: "Kyrie Irving",
-    message: "We are going to the finals!",
-    avatar: "",
-  },
-  {
-    name: "Travis Scott",
-    message: "Let's go to the club tonight!",
-    avatar: "",
-  },
-];
+import { useEffect, useState } from "react";
+import { SupabaseClient } from "@supabase/supabase-js";
+import { supabase } from "@/api/supabaseClient";
+import {
+  fetchChats,
+  fetchMessages,
+  sendMessage,
+} from "@/api/fetchers/chatServices";
+import { stringToAvatar } from "@/utils/stringAvatar";
 
 export default function Home() {
+  const [messages, setMessages] = useState<any[]>([]);
+  const [chats, setChats] = useState<any[]>([]);
+  const [senderId, setSenderId] = useState<number>(1);
+  const [recipientId, setRecipientId] = useState<number | null>(null);
+
+  //fetch chats for the user
   useEffect(() => {
-    setTimeout(() => {}, 2000);
-  });
+    const fetchInitialChats = async () => {
+      const fetchedChats = await fetchChats(senderId);
+      if (fetchedChats) {
+        setChats(fetchedChats);
+      }
+    };
+
+    fetchInitialChats();
+  }, [senderId]);
+
+  useEffect(() => {
+    const fetchInitialMessages = async () => {
+      //@ts-ignore
+      const fetchedMessages = await fetchMessages(2, recipientId);
+      if (fetchedMessages) {
+        setMessages(fetchedMessages);
+      }
+    };
+
+    fetchInitialMessages();
+
+    const channel = supabase
+      .channel("custom-all-channel")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "messages" },
+        (payload) => {
+          setMessages((prevMessages) => [...prevMessages, payload.new]);
+        }
+      )
+      .subscribe();
+    console.log("messages : ", messages);
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [senderId, recipientId]);
+
+  const [messageContent, setMessageContent] = useState<string>("");
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (messageContent.trim() === "") return;
+    //@ts-ignore
+    const newMessage = await sendMessage(senderId, recipientId, messageContent);
+    if (newMessage) {
+      setMessages((prevMessages) => [...prevMessages, newMessage[0]]);
+      setMessageContent("");
+    }
+  };
+
   return (
     <div className="flex gap-6 w-full h-full">
       <Card className="w-1/3 h-full">
@@ -68,31 +107,40 @@ export default function Home() {
             />
           </div>
           <div className="flex flex-col gap-2 mt-4">
-            {chats.map((chat, index) => (
+            {chats?.map((chat, index) => (
               <div
                 key={index}
-                className={cn(
-                  "flex items-center gap-4 p-3 rounded-xl",
-                  chat.selected && "bg-primary text-white",
-                  !chat.selected && "hover:bg-gray-100 hover:cursor-pointer"
-                )}
+                className={`flex items-center gap-4 p-3 rounded-xl ${
+                  chat.recipient_id === recipientId
+                    ? "bg-primary text-white"
+                    : "bg-gray-200 text-black"
+                }`}
+                onClick={() =>
+                  setRecipientId(
+                    senderId === chat.from.id ? chat.to.id : chat.from.id
+                  )
+                }
               >
                 <Avatar>
-                  <AvatarImage
-                    alt="photo"
-                    src="https://github.com/shadcn.png"
+                  <AvatarFallback
+                    {...stringToAvatar(
+                      senderId === chat.from.id ? chat.to.name : chat.from.name
+                    )}
                   />
-                  <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <div>
-                  <h4 className="text-sm font-medium">{chat.name}</h4>
+                  <h4 className="text-sm font-medium">
+                    {senderId === chat.from.id ? chat.to.name : chat.from.name}
+                  </h4>
                   <p
                     className={cn(
-                      "text-xs text-muted-foreground",
-                      chat.selected && "text-white"
+                      "text-xs text-muted-foreground text-gray-500",
+                      chat.recipient_id === recipientId
+                        ? "bg-primary text-white"
+                        : "bg-gray-200 text-black"
                     )}
                   >
-                    {chat.message}
+                    {chat.content}
                   </p>
                 </div>
               </div>
@@ -100,57 +148,62 @@ export default function Home() {
           </div>
         </CardContent>
       </Card>
-      <Card className="w-2/3 h-full">
+
+      <Card className="w-2/3 h-full flex flex-col">
         <CardHeader className="flex flex-row items-center justify-between py-2 border-b-2">
           <CardTitle className="text-sm font-medium">
             <div className="flex items-center gap-4">
-              <Avatar>
-                <AvatarImage alt="photo" src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <span>John Doe</span>
+              <span>CHAT</span>
             </div>
           </CardTitle>
           <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon">
-              <Phone className="size-4" />
-            </Button>
             <Button variant="ghost" size="icon">
               <Info className="size-4" />
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="mt-2">
-          <div className="flex flex-col gap-4 h-full">
-            <div className="flex items-center gap-1 max-w-[500px] min-w-52">
-              <Avatar className="size-7">
-                <AvatarImage alt="photo" src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <div className="flex items-center gap-4 p-3 rounded-xl bg-primary text-white">
-                <div>
-                  <p className="text-sm">Hey, how are you?</p>
+        <CardContent className="flex-1 overflow-auto p-4">
+          <div className="flex flex-col gap-4">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`flex ${
+                  message.sender_id === senderId
+                    ? "justify-end"
+                    : "justify-start"
+                }`}
+              >
+                <div
+                  className={`flex items-center gap-2 p-3 rounded-xl ${
+                    message.sender_id === senderId
+                      ? "bg-primary text-white"
+                      : "bg-gray-200 text-black"
+                  }`}
+                >
+                  {message.sender_id !== senderId && (
+                    <Avatar className="size-7">
+                      <AvatarFallback
+                        {...stringToAvatar(
+                          senderId === message.from.id
+                            ? message.to.name
+                            : message.from.name
+                        )}
+                      />
+                    </Avatar>
+                  )}
+
+                  <div>
+                    <p className="text-sm">{message.content}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="flex justify-end gap-2">
-              <div className="flex items-center gap-4 max-w-[500px] min-w-52 p-3 rounded-xl bg-gray-200 text-black">
-                <div>
-                  <p className="text-sm">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Necessitatibus eaque enim cum? Nulla, doloribus quod.
-                    Incidunt, minus assumenda aspernatur veritatis, tempore
-                    nesciunt in culpa neque sequi explicabo quaerat esse modi?
-                  </p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </CardContent>
         <CardFooter>
           <form
             className="w-full relative overflow-hidden rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring"
-            x-chunk="dashboard-03-chunk-1"
+            onSubmit={handleSendMessage}
           >
             <Label htmlFor="message" className="sr-only">
               Message
@@ -159,16 +212,10 @@ export default function Home() {
               id="message"
               placeholder="Type your message here..."
               className="min-h-12 resize-none border-0 p-3 shadow-none focus-visible:ring-0"
+              value={messageContent}
+              onChange={(e) => setMessageContent(e.target.value)}
             />
             <div className="flex items-center p-3 pt-0">
-              <Button variant="ghost" size="icon">
-                <Paperclip className="size-4" />
-                <span className="sr-only">Attach file</span>
-              </Button>
-              <Button variant="ghost" size="icon">
-                <Mic className="size-4" />
-                <span className="sr-only">Use Microphone</span>
-              </Button>
               <Button type="submit" size="sm" className="ml-auto gap-1.5">
                 Send Message
                 <CornerDownLeft className="size-3.5" />
