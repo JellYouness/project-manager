@@ -12,7 +12,19 @@ export interface Task {
   document?: any;
   documents?: [];
 }
-const type = JSON.parse(window.localStorage.getItem("user") as string).type;
+
+function getFromLocalStorage(key: any) {
+  if (typeof window !== "undefined") {
+    return window.localStorage.getItem(key);
+  }
+  return null;
+}
+
+const user = getFromLocalStorage("user");
+const type = user ? JSON.parse(user).type : null;
+
+const projet = getFromLocalStorage("projet");
+const projetId = projet ? JSON.parse(projet) : null;
 
 const tasksApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -29,7 +41,7 @@ const tasksApi = baseApi.injectEndpoints({
     }),
     createTask: build.mutation<Task, Partial<Task>>({
       query: (body) => ({
-        url: "encadrant/projets/2/taches",
+        url: `encadrant/projets/${JSON.parse(window.localStorage.getItem("projet") as string)}/taches`,
         method: "POST",
         body,
       }),
@@ -71,6 +83,12 @@ const tasksApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["task"],
     }),
+    statistics: build.query({
+      query: () => ({
+        url: "/admin/statistics",
+        method: "GET",
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -81,4 +99,5 @@ export const {
   useUpdateTaskMutation,
   useEncadrantUpdateTaskMutation,
   useDeleteTaskMutation,
+  useStatisticsQuery,
 } = tasksApi;

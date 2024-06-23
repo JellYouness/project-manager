@@ -13,29 +13,8 @@ import { Button } from "@/components/ui/button";
 import { useGetEquipesQuery } from "@/api/routes/crud/enseignants";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useGetTasksQuery } from "@/api/routes/root/tasks";
+import { useGetTasksQuery, useStatisticsQuery } from "@/api/routes/root/tasks";
 import { baseApi, dispatch } from "@/api/baseApi";
-
-const cards = [
-  {
-    title: "Taches en cours",
-    icon: <BookmarkMinus className="h-4 w-4 text-muted-foreground" />,
-    value: "+2350",
-    description: "+180.1% from last month",
-  },
-  {
-    title: "Taches terminées",
-    icon: <BookmarkCheck className="h-4 w-4 text-muted-foreground" />,
-    value: "+12,234",
-    description: "+19% from last month",
-  },
-  {
-    title: "Active Now",
-    icon: <Activity className="h-4 w-4 text-muted-foreground" />,
-    value: "+573",
-    description: "+201 since last hour",
-  },
-];
 
 const tasks = [
   {
@@ -87,17 +66,56 @@ const events = [
 
 export default function Home() {
   const { data: equipes } = useGetEquipesQuery();
+  //@ts-ignore
+  const { data: stats } = useStatisticsQuery();
   const [userType, setUserType] = useState(null);
   const router = useRouter();
+  const [totalEtudiants, setTotalEtudiants] = useState(0);
+  const [totalEquipes, setTotalEquipes] = useState(0);
+  const [totalProjets, setTotalProjets] = useState(0);
+
+  const cards = [
+    {
+      title: "Taches en cours",
+      icon: <BookmarkMinus className="size-6 text-muted-foreground" />,
+      value: totalEtudiants,
+      description: "+180.1% from last month",
+    },
+    {
+      title: "Taches terminées",
+      icon: <BookmarkCheck className="size-6 text-muted-foreground" />,
+      value: totalEquipes,
+      description: "+19% from last month",
+    },
+    {
+      title: "Active Now",
+      icon: <Activity className="size-6 text-muted-foreground" />,
+      value: totalProjets,
+      description: "+201 since last hour",
+    },
+    {
+      title: "Active Now",
+      icon: <Activity className="size-6 text-muted-foreground" />,
+      value: totalProjets,
+      description: "+201 since last hour",
+    },
+  ];
 
   useEffect(() => {
     setUserType(JSON.parse(localStorage.getItem("user") as string).type);
   }, [userType]);
 
+  useEffect(() => {
+    setTotalEtudiants(stats?.totalEtudiants);
+    setTotalEquipes(stats?.totalEquipes);
+    setTotalProjets(stats?.totalProjets);
+    //@ts-ignore
+  }, [stats]);
+
   const handleProjetClick = (equipe: any) => {
     if (equipe.sujet) {
       window.localStorage.setItem("projet", equipe.id);
-      window.localStorage.setItem("sujet", equipe.sujet)
+      window.localStorage.setItem("sujet", equipe.sujet);
       dispatch(baseApi.util.invalidateTags(["task"]));
       router.push("/tasks");
     } else {
@@ -148,7 +166,7 @@ export default function Home() {
       )}
       {userType !== "encadrant" && (
         <>
-          <div className="grid gap-4 md:grid-cols-1 md:gap-8 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-1 md:gap-8 lg:grid-cols-2">
             {cards.map((card, index) => (
               <Card key={index}>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -157,11 +175,8 @@ export default function Home() {
                   </CardTitle>
                   {card.icon}
                 </CardHeader>
-                <CardContent>
+                <CardContent className="mt-2">
                   <div className="text-2xl font-bold">{card.value}</div>
-                  <p className="text-xs text-muted-foreground">
-                    {card.description}
-                  </p>
                 </CardContent>
               </Card>
             ))}
