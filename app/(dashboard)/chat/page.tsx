@@ -21,7 +21,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Label } from "@radix-ui/react-label";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { supabase } from "@/api/supabaseClient";
 import {
@@ -33,20 +33,22 @@ import { stringToAvatar } from "@/utils/stringAvatar";
 
 export default function Home() {
   const [messages, setMessages] = useState<any[]>([]);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [chats, setChats] = useState<any[]>([]);
-  const [senderId, setSenderId] = useState<number>(1);
+  const [senderId, setSenderId] = useState<number | null>(null);
   const [recipientId, setRecipientId] = useState<number | null>(null);
 
   useEffect(() => {}, []);
 
   //fetch chats for the user
   useEffect(() => {
-    const supabase_id = JSON.parse(
-      window.localStorage.getItem("user") as string
-    ).supabase;
-    setSenderId(supabase_id);
+    setSenderId(
+      JSON.parse(window.localStorage.getItem("user") as string).supabase
+    );
     const fetchInitialChats = async () => {
-      const fetchedChats = await fetchChats(senderId);
+      const fetchedChats = await fetchChats(
+        JSON.parse(window.localStorage.getItem("user") as string).supabase
+      );
       if (fetchedChats) {
         setChats(fetchedChats);
       }
@@ -93,6 +95,8 @@ export default function Home() {
     if (newMessage) {
       setMessages((prevMessages) => [...prevMessages, newMessage[0]]);
       setMessageContent("");
+      //@ts-ignore
+      if (inputRef && inputRef.current) inputRef.current.value = null;
     }
   };
 
@@ -130,13 +134,17 @@ export default function Home() {
                 <Avatar>
                   <AvatarFallback
                     {...stringToAvatar(
-                      senderId === chat.from?.id ? chat.to?.name : chat.from?.name
+                      senderId === chat.from?.id
+                        ? chat.to?.name
+                        : chat.from?.name
                     )}
                   />
                 </Avatar>
                 <div>
                   <h4 className="text-sm font-medium">
-                    {senderId === chat.from?.id ? chat.to?.name : chat.from?.name}
+                    {senderId === chat.from?.id
+                      ? chat.to?.name
+                      : chat.from?.name}
                   </h4>
                   <p
                     className={cn(
@@ -215,6 +223,7 @@ export default function Home() {
               Message
             </Label>
             <Input
+              ref={inputRef}
               id="message"
               placeholder="Type your message here..."
               className="min-h-12 resize-none border-0 p-3 shadow-none focus-visible:ring-0"
