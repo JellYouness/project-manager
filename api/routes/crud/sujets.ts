@@ -7,6 +7,10 @@ const sujetApi: any = baseApi.injectEndpoints({
       transformResponse: (response: any) => response.sujets,
       providesTags: ["sujet"],
     }),
+    getDispoSujets: builder.query({
+      query: () => "sujets",
+      transformResponse: (response: any) => response.sujets,
+    }),
     getSujet: builder.query({
       query: (id: string) => `encadrant-infos/${id}`,
       transformResponse: (response: any) => response.sujet,
@@ -40,6 +44,7 @@ const sujetApi: any = baseApi.injectEndpoints({
 
 export const {
   useGetSujetsQuery,
+  useGetDispoSujetsQuery,
   useGetSujetQuery,
   useCreateSujetMutation,
   useUpdateSujetMutation,

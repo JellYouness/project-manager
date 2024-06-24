@@ -164,9 +164,19 @@ export const columns: ColumnDef<any>[] = [
     ),
   },
   {
+    id: "Project",
+    accessorFn: (row) => {
+      if (row.sujet) return `actif`;
+      else return "Sans projet";
+    },
+    cell: ({ row }) => (
+      <div className="font-medium">{row.getValue("Project")}</div>
+    ),
+  },
+  {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => (
+    cell: ({ row }: any) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -186,13 +196,15 @@ export const columns: ColumnDef<any>[] = [
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link
-              className="flex flex-center gap-3"
-              href={`/groupes/${row.getValue("id")}/add-sujet`}
-            >
-              <Pencil className="size-5" />
-              Assigner sujet
-            </Link>
+            {row.original.sujet === null && (
+              <Link
+                className="flex flex-center gap-3"
+                href={`/groupes/${row.getValue("id")}/add-sujet`}
+              >
+                <Pencil className="size-5" />
+                Assigner sujet
+              </Link>
+            )}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

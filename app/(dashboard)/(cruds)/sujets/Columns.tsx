@@ -87,6 +87,15 @@ export const columns: ColumnDef<any>[] = [
     },
   },
   {
+    id: "dispo",
+    accessorFn: (row) =>
+      row.disponible === 1 ? "Disponible" : "Non disponible",
+    header: () => <div>Etat</div>,
+    cell: ({ row }) => (
+      <div className="font-medium">{row.getValue("dispo")}</div>
+    ),
+  },
+  {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => (

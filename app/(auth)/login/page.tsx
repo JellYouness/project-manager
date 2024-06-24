@@ -111,14 +111,7 @@ export default function Home() {
               </Button>
             </form>
           </Form>
-          <div className="flex w-full items-center justify-center gap-2">
-            <div className="flex h-px w-full grow shrink-0 basis-0 flex-col items-center gap-2 bg-gray-200" />
-            <span className="text-base text-gray-400">ou</span>
-            <div className="flex h-px w-full grow shrink-0 basis-0 flex-col items-center gap-2 bg-gray-200" />
-          </div>
-          <Link href="/signup">
-            <Button variant="secondary">Sign up</Button>
-          </Link>
+          
         </div>
       </div>
     </SnackbarProvider>

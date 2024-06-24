@@ -1,5 +1,5 @@
 "use client";
-import { Activity, BookmarkCheck, Timer, BookmarkMinus } from "lucide-react";
+import { Activity, BookmarkCheck, Timer, BookmarkMinus, Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -16,56 +16,9 @@ import { useRouter } from "next/navigation";
 import { useGetTasksQuery, useStatisticsQuery } from "@/api/routes/root/tasks";
 import { baseApi, dispatch } from "@/api/baseApi";
 
-const tasks = [
-  {
-    icon: "FeatherReceipt",
-    title: "Process invoices",
-    description: "You have 1 to review",
-    time: "Today",
-  },
-  {
-    icon: "FeatherUploadCloud",
-    title: "Upload additional documents",
-    description: "We need a few more details",
-    time: "Today",
-  },
-  {
-    icon: "FeatherCreditCard",
-    title: "Set up a payment method",
-    description: "Avoid delaying invoices and payments",
-    time: "Yesterday",
-  },
-  {
-    icon: "FeatherCheckCheck",
-    title: "Finish verification",
-    description: "Verify your account securely",
-    time: "Yesterday",
-  },
-];
-
-const events = [
-  {
-    icon: "FeatherCalendar",
-    title: "Department Offsite",
-    date: "Monday, Nov 13, 2023",
-    time: "All-day",
-  },
-  {
-    icon: "FeatherCalendar",
-    title: "Quartery Review",
-    date: "Tuesday, Nov 3, 2023",
-    time: "9:00 AM",
-  },
-  {
-    icon: "FeatherCalendar",
-    title: "Project kick-off",
-    date: "Monday, Nov 13, 2023",
-    time: "3:00 PM",
-  },
-];
-
 export default function Home() {
   const { data: equipes } = useGetEquipesQuery();
+  const { data: tasks, refetch } = useGetTasksQuery();
   //@ts-ignore
   const { data: stats } = useStatisticsQuery();
   const [userType, setUserType] = useState(null);
@@ -164,77 +117,110 @@ export default function Home() {
           ))}
         </div>
       )}
-      {userType !== "encadrant" && (
-        <>
-          <div className="grid gap-4 md:grid-cols-1 md:gap-8 lg:grid-cols-2">
-            {cards.map((card, index) => (
-              <Card key={index}>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    {card.title}
-                  </CardTitle>
-                  {card.icon}
-                </CardHeader>
-                <CardContent className="mt-2">
-                  <div className="text-2xl font-bold">{card.value}</div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="flex gap-7 mt-7">
-            <Card className="flex w-full flex-col items-start rounded bg-white shadow-default">
-              <CardHeader className="flex flex-row w-full items-center gap-2 p-3">
-                <div className="flex w-full items-center gap-2">
-                  <CardTitle className="w-full grow shrink-0 basis-0 text-lg font-bold">
-                    To-do
-                  </CardTitle>
-                  <Link href="/dashboard">
-                    <Button>View all</Button>
-                  </Link>
-                </div>
-              </CardHeader>
-              <div className="flex h-px w-full flex-none flex-col items-center gap-2 bg-gray-200" />
-              <div className="flex w-full flex-col items-start p-2">
-                {tasks.map((task, i) => (
-                  <div className="flex w-full items-center gap-4 p-4" key={i}>
-                    <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-1">
-                      <span className="w-full text-sm">{task.title}</span>
-                      <span className="w-full text-sm text-gray-400">
-                        {task.description}
-                      </span>
-                    </div>
-                    <span className="text-sm text-gray-400">{task.time}</span>
-                  </div>
-                ))}
-              </div>
-            </Card>
-            <Card className="flex w-full flex-col items-start rounded bg-white shadow-default">
-              <CardHeader className="flex flex-row w-full items-center gap-2 p-3">
-                <CardTitle className="w-full grow shrink-0 basis-0 text-lg font-bold">
-                  Upcoming events
+      {userType === "admin" && (
+        <div className="grid gap-4 md:grid-cols-1 md:gap-8 lg:grid-cols-2">
+          {cards.map((card, index) => (
+            <Card key={index}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  {card.title}
                 </CardTitle>
-                <Link href="/calendar">
-                  <Button>View all</Button>
-                </Link>
+                {card.icon}
               </CardHeader>
-              <div className="flex h-px w-full flex-none flex-col items-center gap-2 bg-gray-200" />
-              <CardContent className="flex w-full flex-col items-start p-2">
-                {events.map((event, i) => (
-                  <div className="flex w-full items-center gap-4 p-4" key={i}>
-                    <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-1">
-                      <span className="w-full text-sm">{event.title}</span>
-                      <span className="w-full text-sm text-gray-400">
-                        {event.date}
-                      </span>
-                    </div>
-                    <span className="text-sm text-gray-400">{event.time}</span>
-                  </div>
-                ))}
+              <CardContent className="mt-2">
+                <div className="text-2xl font-bold">{card.value}</div>
               </CardContent>
             </Card>
-          </div>
-        </>
+          ))}
+        </div>
+      )}
+      {userType === "etudiant" && (
+        <div className="flex gap-7 mt-7">
+          <Card className="flex w-full flex-col items-start rounded bg-white shadow-default">
+            <CardHeader className="flex flex-row w-full items-center gap-2 p-3">
+              <div className="flex w-full items-center gap-2">
+                <CardTitle className="w-full grow shrink-0 basis-0 text-lg font-bold">
+                  To-do
+                </CardTitle>
+                <Link href="/tasks">
+                  <Button>Voir tous</Button>
+                </Link>
+              </div>
+            </CardHeader>
+            <div className="flex h-px w-full flex-none flex-col items-center gap-2 bg-gray-200" />
+            <div className="flex w-full flex-col items-start p-2">
+              {tasks
+                ?.filter((task) => task.etat === "todo")
+                .map((task) => (
+                  <div
+                    key={task.id}
+                    className="w-full bg-white flex justify-between text-sm rounded-md p-3 mb-2 shadow-sm border-[1px] border-gray-200 hover:bg-gray-200"
+                  >
+                    <div className="flex flex-col items-start gap-1">
+                      <p className="text-lg font-bold">{task.titre}</p>
+                      <p className="text-gray-500">{task.description}</p>
+                    </div>
+                    <div className="flex flex-col items-center gap-2">
+                      <button
+                        className="p-1 m-0 h-auto bg-transparent text-transparent"
+                        disabled
+                      >
+                        <Eye className="size-4" />
+                      </button>
+                      <button
+                        className="p-1 m-0 h-auto bg-transparent text-transparent"
+                        disabled
+                      >
+                        <Eye className="size-4" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </Card>
+          <Card className="flex w-full flex-col items-start rounded bg-white shadow-default">
+            <CardHeader className="flex flex-row w-full items-center gap-2 p-3">
+              <div className="flex w-full items-center gap-2">
+                <CardTitle className="w-full grow shrink-0 basis-0 text-lg font-bold">
+                  En cours
+                </CardTitle>
+                <Link href="/tasks">
+                  <Button>Voir tous</Button>
+                </Link>
+              </div>
+            </CardHeader>
+            <div className="flex h-px w-full flex-none flex-col items-center gap-2 bg-gray-200" />
+            <div className="flex w-full flex-col items-start p-2">
+              {tasks
+                ?.filter((task) => task.etat === "encours")
+                .map((task) => (
+                  <div
+                    key={task.id}
+                    className="w-full bg-white flex justify-between text-sm rounded-md p-3 mb-2 shadow-sm border-[1px] border-gray-200 hover:bg-gray-200"
+                  >
+                    <div className="flex flex-col items-start gap-1">
+                      <p className="text-lg font-bold">{task.titre}</p>
+                      <p className="text-gray-500">{task.description}</p>
+                    </div>
+                    <div className="flex flex-col items-center gap-2">
+                      <button
+                        className="p-1 m-0 h-auto bg-transparent text-transparent"
+                        disabled
+                      >
+                        <Eye className="size-4" />
+                      </button>
+                      <button
+                        className="p-1 m-0 h-auto bg-transparent text-transparent"
+                        disabled
+                      >
+                        <Eye className="size-4" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </Card>
+        </div>
       )}
     </main>
   );

@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import { Autocomplete, TextField } from "@mui/material";
 import {
   useAssignSujetMutation,
-  useGetSujetsQuery,
+  useGetDispoSujetsQuery,
 } from "@/api/routes/crud/sujets";
 import { useGetTasksQuery } from "@/api/routes/root/tasks";
 
@@ -32,7 +32,7 @@ const FormSchema = z.object({
 export default function Home({ params }: { params: { id: number } }) {
   const { enqueueSnackbar } = useSnackbar();
   const [assignSujet, { isSuccess }] = useAssignSujetMutation();
-  const { data: sujets } = useGetSujetsQuery();
+  const { data: sujets } = useGetDispoSujetsQuery();
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),

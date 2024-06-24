@@ -34,7 +34,7 @@ const SideBar = () => {
       const userType = JSON.parse(
         window.localStorage.getItem("user") as string
       )?.type;
-      if (userType === "etudiant" || userType === "encadrant") {
+      if (userType === "encadrant") {
         setLinks([
           {
             title: "Home",
@@ -49,15 +49,9 @@ const SideBar = () => {
             variant: "default",
           },
           {
-            title: "Calendar",
-            href: "/calendar",
-            icon: Calendar,
-            variant: "default",
-          },
-          {
-            title: "Documents",
-            href: "/documents",
-            icon: File,
+            title: "Sujets",
+            href: "/sujets",
+            icon: Captions,
             variant: "default",
           },
           {
@@ -66,7 +60,29 @@ const SideBar = () => {
             icon: MessageCircle,
             variant: "default",
           },
-        ])
+        ]);
+      }
+      if (userType === "etudiant") {
+        setLinks([
+          {
+            title: "Home",
+            href: "/",
+            icon: Home,
+            variant: "ghost",
+          },
+          {
+            title: "Taches",
+            href: "/tasks",
+            icon: LayoutDashboard,
+            variant: "default",
+          },
+          {
+            title: "Chat",
+            href: "/chat",
+            icon: MessageCircle,
+            variant: "default",
+          },
+        ]);
       }
     
       if (userType === "admin") {

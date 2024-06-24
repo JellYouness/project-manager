@@ -1,11 +1,17 @@
 "use client";
-import React from "react";
+import React, { use, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  useProfileQuery,
+  useUpdateProfileMutation,
+} from "@/api/routes/root/tasks";
+import { enqueueSnackbar, useSnackbar } from "notistack";
+import { useRouter } from "next/navigation";
 
 const profileSchema = z.object({
   nom: z.string().min(1, { message: "Nom is required" }),
@@ -31,7 +37,13 @@ const passwordSchema = z
   });
 
 export default function Home() {
+  //@ts-ignore
+  const { data: user } = useProfileQuery();
+  const [updateProfile, { isSuccess }] = useUpdateProfileMutation();
+  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
   const {
+    reset,
     control: profileControl,
     handleSubmit: handleProfileSubmit,
     formState: { errors: profileErrors },
@@ -57,13 +69,30 @@ export default function Home() {
     },
   });
 
-  const onProfileSubmit = (data: any) => {
-    console.log("Profile Data:", data);
+  const onProfileSubmit = async (data: any) => {
+    await updateProfile(data);
   };
 
   const onPasswordSubmit = (data: any) => {
     console.log("Password Data:", data);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      enqueueSnackbar("Profile updated successfully", { variant: "success" });
+      router.push("/settings");
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (user) {
+      reset({
+        nom: user.nom,
+        prenom: user.prenom,
+        email: user.email,
+      });
+    }
+  }, [user]);
 
   return (
     <main>
@@ -125,74 +154,6 @@ export default function Home() {
             </div>
             <div className="flex w-full items-center justify-end">
               <Button type="submit">Modifier</Button>
-            </div>
-          </form>
-        </div>
-
-        <div className="flex h-px w-full flex-none flex-col items-center gap-2 bg-gray-200" />
-
-        <div className="flex w-full flex-col items-start gap-6">
-          <span className="text-xl font-semibold">Mot de passe</span>
-          <form
-            onSubmit={handlePasswordSubmit(onPasswordSubmit)}
-            className="w-full"
-          >
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="actuelMotDePasse">Actuel</Label>
-              <Controller
-                name="actuelMotDePasse"
-                control={passwordControl}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    type="password"
-                    id="actuelMotDePasse"
-                    placeholder="Current Password"
-                  />
-                )}
-              />
-              {passwordErrors.actuelMotDePasse && (
-                <span>{passwordErrors.actuelMotDePasse.message}</span>
-              )}
-            </div>
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="nouveauMotDePasse">Nouveau</Label>
-              <Controller
-                name="nouveauMotDePasse"
-                control={passwordControl}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    type="password"
-                    id="nouveauMotDePasse"
-                    placeholder="New Password"
-                  />
-                )}
-              />
-              {passwordErrors.nouveauMotDePasse && (
-                <span>{passwordErrors.nouveauMotDePasse.message}</span>
-              )}
-            </div>
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="confirmerMotDePasse">Confirmer</Label>
-              <Controller
-                name="confirmerMotDePasse"
-                control={passwordControl}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    type="password"
-                    id="confirmerMotDePasse"
-                    placeholder="Confirm Password"
-                  />
-                )}
-              />
-              {passwordErrors.confirmerMotDePasse && (
-                <span>{passwordErrors.confirmerMotDePasse.message}</span>
-              )}
-            </div>
-            <div className="flex w-full flex-col items-start justify-center gap-6">
-              <Button type="submit">Modifier le mot de passe</Button>
             </div>
           </form>
         </div>

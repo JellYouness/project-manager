@@ -22,6 +22,7 @@ function getFromLocalStorage(key: any) {
 
 const user = getFromLocalStorage("user");
 const type = user ? JSON.parse(user).type : null;
+const email = user ? JSON.parse(user).email : null;
 
 const projet = getFromLocalStorage("projet");
 const projetId = projet ? JSON.parse(projet) : null;
@@ -31,7 +32,7 @@ const tasksApi = baseApi.injectEndpoints({
     getTasks: build.query<Task[], void>({
       query: () => ({
         url:
-          type === "etudiant"
+          JSON.parse(window.localStorage.getItem("user") as string).type === "etudiant"
             ? "etudiant/taches-assignees"
             : `encadrant/projets/${JSON.parse(window.localStorage.getItem("projet") as string)}/taches`,
         method: "GET",
@@ -55,13 +56,13 @@ const tasksApi = baseApi.injectEndpoints({
           formData.append("etat", "toreview");
           return {
             url: `etudiant/taches/${id}`,
-            method: "PUT",
+            method: "POST",
             body: formData,
           };
         } else {
           return {
             url: `etudiant/taches/${id}`,
-            method: "PUT",
+            method: "POST",
             body,
           };
         }
@@ -89,6 +90,20 @@ const tasksApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    profile: build.query({
+      query: () => ({
+        url: `/admin-infos/${JSON.parse(window.localStorage.getItem("user") as string).email}`,
+        method: "GET",
+      }),
+      transformResponse: (response: any) => response.admin,
+    }),
+    updateProfile: build.mutation({
+      query: (body) => ({
+        url: "/update-admin",
+        method: "PUT",
+        body: { ...body, type: type },
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -100,4 +115,6 @@ export const {
   useEncadrantUpdateTaskMutation,
   useDeleteTaskMutation,
   useStatisticsQuery,
+  useProfileQuery,
+  useUpdateProfileMutation,
 } = tasksApi;
