@@ -102,7 +102,10 @@ const tasksApi = baseApi.injectEndpoints({
       query: (body) => ({
         url: "update-admin",
         method: "POST",
-        body: { ...body, type: type },
+        body: {
+          ...body,
+          type: JSON.parse(window.localStorage.getItem("user") as string).type,
+        },
       }),
     }),
   }),
