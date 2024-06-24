@@ -4,8 +4,10 @@ export async function fetchMessages(senderId: number, recipientId: number) {
   const { data, error } = await supabase
     .from("messages")
     .select("*,from:sender_id(id,name),to:recipient_id(id,name)")
-    //.or(`sender_id.eq.${recipientId},and(recipient_id.eq.${senderId})`)
-    .or(`sender_id.eq.${senderId},and(recipient_id.eq.${recipientId})`)
+    .or(
+      `and(sender_id.eq.${recipientId},recipient_id.eq.${senderId}),` +
+        `and(sender_id.eq.${senderId},recipient_id.eq.${recipientId})`
+    )
     .order("created_at", { ascending: true });
 
   if (error) {

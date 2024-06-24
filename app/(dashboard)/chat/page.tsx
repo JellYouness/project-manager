@@ -60,7 +60,7 @@ export default function Home() {
   useEffect(() => {
     const fetchInitialMessages = async () => {
       //@ts-ignore
-      const fetchedMessages = await fetchMessages(2, recipientId);
+      const fetchedMessages = await fetchMessages(senderId, recipientId);
       if (fetchedMessages) {
         setMessages(fetchedMessages);
       }
