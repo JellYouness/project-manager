@@ -9,7 +9,7 @@ const etudiantApi: any = baseApi.injectEndpoints({
     }),
     getEtudiantsNoEquipe: builder.query({
       query: () => `list-etudiants-sans-equipe`,
-      transformResponse: (response: any) => response.etudiants,
+      transformResponse: (response: any) => response.etudiants_sans_equipe,
     }),
     getEtudiant: builder.query({
       query: (id: string) => `etudiant-infos/${id}`,

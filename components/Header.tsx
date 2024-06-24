@@ -53,6 +53,7 @@ const Header = () => {
           {JSON.parse(window.localStorage.getItem("user") as string).sujet}
         </Badge>
       )}
+      {user?.type === "admin" && <div />}
       <div className="flex items-center gap-6">
         <Link
           className={buttonVariants({
