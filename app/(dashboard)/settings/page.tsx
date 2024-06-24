@@ -19,23 +19,6 @@ const profileSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
 });
 
-const passwordSchema = z
-  .object({
-    actuelMotDePasse: z
-      .string()
-      .min(1, { message: "Current password is required" }),
-    nouveauMotDePasse: z
-      .string()
-      .min(6, { message: "New password must be at least 6 characters long" }),
-    confirmerMotDePasse: z.string().min(6, {
-      message: "Confirm password must be at least 6 characters long",
-    }),
-  })
-  .refine((data) => data.nouveauMotDePasse === data.confirmerMotDePasse, {
-    message: "New password and Confirm password must match",
-    path: ["confirmerMotDePasse"],
-  });
-
 export default function Home() {
   //@ts-ignore
   const { data: user } = useProfileQuery();
@@ -43,6 +26,7 @@ export default function Home() {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const {
+    getValues: getProfileValues,
     reset,
     control: profileControl,
     handleSubmit: handleProfileSubmit,
@@ -53,19 +37,6 @@ export default function Home() {
       nom: "",
       prenom: "",
       email: "",
-    },
-  });
-
-  const {
-    control: passwordControl,
-    handleSubmit: handlePasswordSubmit,
-    formState: { errors: passwordErrors },
-  } = useForm<z.infer<typeof passwordSchema>>({
-    resolver: zodResolver(passwordSchema),
-    defaultValues: {
-      actuelMotDePasse: "",
-      nouveauMotDePasse: "",
-      confirmerMotDePasse: "",
     },
   });
 
@@ -80,7 +51,13 @@ export default function Home() {
   useEffect(() => {
     if (isSuccess) {
       enqueueSnackbar("Profile updated successfully", { variant: "success" });
-      router.push("/settings");
+      const user = JSON.parse(window.localStorage.getItem("user") as string);
+      user.nom = getProfileValues().nom;
+      user.prenom = getProfileValues().prenom;
+      user.username = user.nom + " " + user.prenom;
+      user.email = getProfileValues().email;
+      window.localStorage.setItem("user", JSON.stringify(user));
+      window.location.reload();
     }
   }, [isSuccess]);
 

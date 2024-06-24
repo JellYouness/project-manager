@@ -32,7 +32,8 @@ const tasksApi = baseApi.injectEndpoints({
     getTasks: build.query<Task[], void>({
       query: () => ({
         url:
-          JSON.parse(window.localStorage.getItem("user") as string).type === "etudiant"
+          JSON.parse(window.localStorage.getItem("user") as string).type ===
+          "etudiant"
             ? "etudiant/taches-assignees"
             : `encadrant/projets/${JSON.parse(window.localStorage.getItem("projet") as string)}/taches`,
         method: "GET",
@@ -92,15 +93,15 @@ const tasksApi = baseApi.injectEndpoints({
     }),
     profile: build.query({
       query: () => ({
-        url: `/admin-infos/${JSON.parse(window.localStorage.getItem("user") as string).email}`,
+        url: `admin-infos/${JSON.parse(window.localStorage.getItem("user") as string).email}`,
         method: "GET",
       }),
       transformResponse: (response: any) => response.admin,
     }),
     updateProfile: build.mutation({
       query: (body) => ({
-        url: "/update-admin",
-        method: "PUT",
+        url: "update-admin",
+        method: "POST",
         body: { ...body, type: type },
       }),
     }),

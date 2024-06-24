@@ -39,13 +39,19 @@ const Header = () => {
   };
   return (
     <header className="bg-white w-full flex items-center justify-between border-b py-3 px-6">
-      {user?.type === "encadrant" ? (
+      {user?.type === "encadrant" && (
         <Badge className="text-sm" variant="default">
           Groupe: #{window?.localStorage?.getItem("projet")} | Sujet:{" "}
           {window?.localStorage?.getItem("sujet")}
         </Badge>
-      ) : (
-        <div />
+      )}
+      {user?.type === "etudiant" && (
+        <Badge className="text-sm" variant="default">
+          Groupe: #
+          {JSON.parse(window.localStorage.getItem("user") as string).equipe} |
+          Sujet:{" "}
+          {JSON.parse(window.localStorage.getItem("user") as string).sujet}
+        </Badge>
       )}
       <div className="flex items-center gap-6">
         <Link

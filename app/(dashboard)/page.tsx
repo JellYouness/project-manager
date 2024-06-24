@@ -1,5 +1,11 @@
 "use client";
-import { Activity, BookmarkCheck, Timer, BookmarkMinus, Eye } from "lucide-react";
+import {
+  Activity,
+  BookmarkCheck,
+  Timer,
+  BookmarkMinus,
+  Eye,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -93,7 +99,16 @@ export default function Home() {
                   <span className="font-bold">Equipe #{equipe.id}</span>
                   <span>
                     <span className="font-bold">Sujet: </span>
-                    {equipe.sujet}
+                    {equipe.sujet ? (
+                      equipe.sujet
+                    ) : (
+                      <span>
+                        Sans sujet,{" "}
+                        <span className="text-red-400">
+                          Clicker pour affecter un sujet
+                        </span>{" "}
+                      </span>
+                    )}
                   </span>
                 </CardTitle>
               </CardHeader>
