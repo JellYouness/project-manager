@@ -8,7 +8,6 @@ import {
   Phone,
   Search,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Card,
   CardContent,
@@ -30,6 +29,7 @@ import {
   sendMessage,
 } from "@/api/fetchers/chatServices";
 import { stringToAvatar } from "@/utils/stringAvatar";
+import { Avatar } from "@mui/material";
 
 export default function Home() {
   const [messages, setMessages] = useState<any[]>([]);
@@ -108,14 +108,6 @@ export default function Home() {
           <MessageCirclePlus className="size-5 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="relative ml-auto flex-1 md:grow-0">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-black" />
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="w-full rounded-full bg-background pl-8"
-            />
-          </div>
           <div className="flex flex-col gap-2 mt-4">
             {chats?.map((chat, index) => (
               <div
@@ -127,19 +119,19 @@ export default function Home() {
                 }`}
                 onClick={() =>
                   setRecipientId(
-                    senderId === chat.from.id ? chat.to?.id : chat.from?.id
+                    senderId == chat.sender_id
+                      ? chat.recipient_id
+                      : chat.sender_id
                   )
                 }
               >
-                <Avatar>
-                  <AvatarFallback
-                    {...stringToAvatar(
-                      senderId === chat.from?.id
-                        ? chat.to?.name
-                        : chat.from?.name
-                    )}
-                  />
-                </Avatar>
+                <Avatar
+                  alt=""
+                  {...stringToAvatar(
+                    senderId === chat.from?.id ? chat.to?.name : chat.from?.name
+                  )}
+                  sx={{ height: 35, width: 35 }}
+                />
                 <div>
                   <h4 className="text-sm font-medium">
                     {senderId === chat.from?.id
@@ -195,15 +187,15 @@ export default function Home() {
                   }`}
                 >
                   {message.sender_id !== senderId && (
-                    <Avatar className="size-7">
-                      <AvatarFallback
-                        {...stringToAvatar(
-                          senderId === message.from?.id
-                            ? message.to?.name
-                            : message.from?.name
-                        )}
-                      />
-                    </Avatar>
+                    <Avatar
+                      alt=""
+                      {...stringToAvatar(
+                        senderId === message.from?.id
+                          ? message.to?.name
+                          : message.from?.name
+                      )}
+                      sx={{ height: 30, width: 30, fontSize: 16 }}
+                    />
                   )}
 
                   <div>
