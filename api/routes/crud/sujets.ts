@@ -37,7 +37,7 @@ const sujetApi: any = baseApi.injectEndpoints({
         method: "POST",
         body: { ...body, etat: "encours" },
       }),
-      invalidatesTags: ["sujet", "task", "myequipes"],
+      invalidatesTags: ["sujet", "task", "myequipes","groupe"],
     }),
   }),
 });
