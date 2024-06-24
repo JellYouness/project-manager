@@ -113,7 +113,8 @@ export default function Home() {
               <div
                 key={index}
                 className={`flex items-center gap-4 p-3 rounded-xl ${
-                  chat.recipient_id === recipientId
+                  chat.recipient_id === recipientId ||
+                  chat.sender_id === recipientId
                     ? "bg-primary text-white"
                     : "bg-gray-200 text-black"
                 }`}
