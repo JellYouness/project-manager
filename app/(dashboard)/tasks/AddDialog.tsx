@@ -59,7 +59,7 @@ const AddTaskDialog = ({ open, onClose, ...other }: AddTaskDialogProps) => {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     //@ts-ignore
     await createTask(data);
-    enqueueSnackbar("tache ajoutée avec succès");
+    enqueueSnackbar("tache ajoutée avec succès", { variant: "success" });
     onClose();
   };
   return (

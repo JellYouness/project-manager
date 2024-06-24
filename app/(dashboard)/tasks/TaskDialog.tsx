@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -10,10 +10,11 @@ import {
   Divider,
 } from "@mui/material";
 import { Button } from "@/components/ui/button";
-import { Task } from "@/api/routes/root/tasks";
+import { Task, useEncadrantUpdateTaskMutation } from "@/api/routes/root/tasks";
 import Link from "next/link";
 import { getFileIcon } from "../(cruds)/sujets/Columns";
 import { Badge } from "@/components/ui/badge";
+import { useSnackbar } from "notistack";
 
 export interface TaskDetailsDialogProps {
   open: Task | null;
@@ -21,6 +22,18 @@ export interface TaskDetailsDialogProps {
 }
 
 const TaskDetailsDialog = ({ open, onClose }: TaskDetailsDialogProps) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const [encadrantUpdateTask, { isSuccess }] = useEncadrantUpdateTaskMutation();
+  const markAsDone = (taskId: number, feedback?: string) => {
+    encadrantUpdateTask({ id: taskId, etat: "todo", feedback: feedback });
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      enqueueSnackbar("Tache modifié avec succès", {
+        variant: "success",
+      });
+    }
+  }, [isSuccess, enqueueSnackbar]);
   return (
     <Dialog
       open={!!open}
@@ -100,6 +113,16 @@ const TaskDetailsDialog = ({ open, onClose }: TaskDetailsDialogProps) => {
         </Grid>
       </DialogContent>
       <DialogActions>
+        <Button
+          onClick={() => {
+            //@ts-ignore
+            markAsDone(open?.id);
+            onClose();
+          }}
+          color="secondary"
+        >
+          set to do
+        </Button>
         <Button onClick={onClose} color="primary">
           Close
         </Button>

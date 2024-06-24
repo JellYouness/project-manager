@@ -17,11 +17,13 @@ import { Input } from "@/components/ui/input";
 import TaskDetailsDialog from "./TaskDialog";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { useSnackbar } from "notistack";
 
 export default function Home() {
   const { data: tasks, refetch } = useGetTasksQuery();
-  const [updateTask] = useUpdateTaskMutation();
-  const [encadrantUpdateTask] = useEncadrantUpdateTaskMutation();
+  const [updateTask, { isSuccess }] = useUpdateTaskMutation();
+  const [encadrantUpdateTask, { isSuccess: success }] =
+    useEncadrantUpdateTaskMutation();
   const [inProgress, setInProgress] = useState<number | null>(null);
   const [done, setDone] = useState<number | null>(null);
   const [review, setReview] = useState<number | null>(null);
@@ -29,6 +31,7 @@ export default function Home() {
   const [feedback, setFeedback] = useState("");
   const [viewTask, setViewTask] = useState<Task | null>(null);
   const [userType, setUserType] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     setUserType(JSON.parse(localStorage.getItem("user")!).type);
@@ -53,6 +56,14 @@ export default function Home() {
     encadrantUpdateTask({ id: taskId, etat: "termine", feedback: feedback });
   };
 
+  useEffect(() => {
+    if (isSuccess || success) {
+      enqueueSnackbar("Tache modifié avec succès", {
+        variant: "success",
+      });
+    }
+  }, [isSuccess, enqueueSnackbar, success]);
+
   return (
     <main className="h-full">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-3/4 overflow-y-hidden">
@@ -62,7 +73,13 @@ export default function Home() {
               To Do
             </CardTitle>
             <Button
-              className="p-1 m-0 h-auto"
+              className={cn(
+                "p-1 m-0 h-auto",
+                userType !== "encadrant"
+                  ? "bg-transparent text-transparent"
+                  : "bg-green-500 hover:bg-green-600 text-white "
+              )}
+              disabled={userType !== "encadrant"}
               onClick={() => {
                 setAddTaskDialog(true);
               }}
