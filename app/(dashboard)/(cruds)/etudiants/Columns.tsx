@@ -12,7 +12,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { useState } from "react";
-import { useDeleteEtudiantMutation } from "@/api/routes/crud/etudiants";
+import { baseApi, dispatch } from "@/api/baseApi";
+import { useDeleteEtudiantMutation } from "@/api/routes/crud/etudiants"; // Import the hook
+import { useSnackbar } from "notistack";
 
 export type Etudiant = {
   id: string;
@@ -85,33 +87,42 @@ export const columns: ColumnDef<Etudiant>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem>
-            <Link
-              className="flex flex-center gap-3"
-              href={`/etudiants/${row.getValue("id")}`}
-            >
-              <Pencil className="size-5" />
-              Modifier
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Button className="flex flex-center gap-3" onClick={() => {}}>
-              <Trash className="size-5" />
-              Supprimer
+    cell: ({ row }) => {
+      const [deleteEtudiant] = useDeleteEtudiantMutation(); // Use the mutation hook
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
             </Button>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link
+                className="flex flex-center gap-3"
+                href={`/etudiants/${row.getValue("id")}`}
+              >
+                <Pencil className="size-5" />
+                Modifier
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <button
+                className="flex flex-center gap-3"
+                onClick={() => {
+                  deleteEtudiant(row.getValue("id")); // Call the delete function
+                }}
+              >
+                <Trash className="size-5" />
+                Supprimer
+              </button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
   },
 ];

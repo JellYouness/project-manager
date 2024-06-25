@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { useDeleteEnseignantMutation } from "@/api/routes/crud/enseignants";
 
 export type Enseignant = {
   id: string;
@@ -75,36 +76,41 @@ export const columns: ColumnDef<Enseignant>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem>
-            <Link
-              className="flex flex-center gap-3"
-              href={`/enseignants/${row.getValue("id")}`}
-            >
-              <Pencil className="size-5" />
-              Modifier
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link
-              className="flex flex-center gap-3"
-              href={`/enseignants/${row.getValue("id")}`}
-            >
-              <Trash className="size-5" />
-              Supprimer
-            </Link>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+    cell: ({ row }) => {
+      const [deleteEnseigant] = useDeleteEnseignantMutation();
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link
+                className="flex flex-center gap-3"
+                href={`/enseignants/${row.getValue("id")}`}
+              >
+                <Pencil className="size-5" />
+                Modifier
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <button
+                className="flex flex-center gap-3"
+                onClick={() => {
+                  deleteEnseigant(row.getValue("id"));
+                }}
+              >
+                <Trash className="size-5" />
+                Supprimer
+              </button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
   },
 ];

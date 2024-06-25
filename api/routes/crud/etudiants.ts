@@ -49,3 +49,5 @@ export const {
   useUpdateEtudiantMutation,
   useDeleteEtudiantMutation,
 } = etudiantApi;
+
+
