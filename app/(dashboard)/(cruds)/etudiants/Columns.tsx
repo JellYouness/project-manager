@@ -27,6 +27,41 @@ export type Etudiant = {
   filiere: "SID" | "RES" | "BD";
 };
 
+const ActionButtons = ({ id }: { id: string }) => {
+  const [deleteEtudiant] = useDeleteEtudiantMutation();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem>
+          <Link className="flex flex-center gap-3" href={`/etudiants/${id}`}>
+            <Pencil className="size-5" />
+            Modifier
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Button
+            className="flex flex-center gap-3"
+            onClick={() => {
+              deleteEtudiant(id);
+            }}
+          >
+            <Trash className="size-5" />
+            Supprimer
+          </Button>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
 export const columns: ColumnDef<Etudiant>[] = [
   {
     accessorKey: "id",
@@ -87,42 +122,6 @@ export const columns: ColumnDef<Etudiant>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      const [deleteEtudiant] = useDeleteEtudiantMutation(); // Use the mutation hook
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>
-              <Link
-                className="flex flex-center gap-3"
-                href={`/etudiants/${row.getValue("id")}`}
-              >
-                <Pencil className="size-5" />
-                Modifier
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <button
-                className="flex flex-center gap-3"
-                onClick={() => {
-                  deleteEtudiant(row.getValue("id")); // Call the delete function
-                }}
-              >
-                <Trash className="size-5" />
-                Supprimer
-              </button>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => <ActionButtons id={row.getValue("id")} />,
   },
 ];
